@@ -18,7 +18,11 @@ create table if not exists users (
   Email varchar(255) not null,
   Coins float(9, 2) default 0,
   primary key (UserID)
-)
+);
+
+alter table users
+add index UserName (UserName),
+add index PassW (PassW);
 
 -- Users table end
 ENGINE = InnoDB

@@ -21,9 +21,11 @@ public class UserDAOImplTest extends DBUnitTestCase {
     public void testCreate() throws Exception {
         User user = createUser()
                 .withFirstName("F")
-                .withLastName("L").build();
+                .withLastName("L")
+                .withUserName("U")
+                .withEmail("E").build();
 
-        userDAO.create(user);
+        userDAO.create(user, "P");
 
         User userFromDB = userDAO.getById(user.getUserId());
         assertNotNull(userFromDB);

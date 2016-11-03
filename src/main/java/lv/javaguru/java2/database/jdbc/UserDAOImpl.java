@@ -3,6 +3,7 @@ package lv.javaguru.java2.database.jdbc;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +13,8 @@ import java.util.List;
 
 public class UserDAOImpl extends DAOImpl implements UserDAO {
 
-    public void create(User user) throws DBException {
-        if (user == null) {
+    public void create(User user, String passW) throws DBException {
+        if (user == null || passW == null) {
             return;
         }
 
@@ -22,9 +23,13 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("insert into USERS values (default, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    connection.prepareStatement("insert into USERS values (default, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getUserName());
+            preparedStatement.setString(4, getHashedPassword(passW));
+            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.setFloat(6, user.getCoins());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -56,6 +61,9 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
                 user.setUserId(resultSet.getLong("UserID"));
                 user.setFirstName(resultSet.getString("FirstName"));
                 user.setLastName(resultSet.getString("LastName"));
+                user.setUserName(resultSet.getString("UserName"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setCoins(resultSet.getFloat("Coins"));
             }
             return user;
         } catch (Throwable e) {
@@ -80,6 +88,9 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
                 user.setUserId(resultSet.getLong("UserID"));
                 user.setFirstName(resultSet.getString("FirstName"));
                 user.setLastName(resultSet.getString("LastName"));
+                user.setUserName(resultSet.getString("UserName"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setCoins(resultSet.getFloat("Coins"));
                 users.add(user);
             }
         } catch (Throwable e) {
@@ -118,11 +129,14 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("update USERS set FirstName = ?, LastName = ? " +
+                    .prepareStatement("update USERS set FirstName = ?, LastName = ?, UserName = ?, Email = ?, Coins = ?" +
                             "where UserID = ?");
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setLong(3, user.getUserId());
+            preparedStatement.setString(3, user.getUserName());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setFloat(5, user.getCoins());
+            preparedStatement.setLong(6, user.getUserId());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.update()");
@@ -133,4 +147,43 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         }
     }
 
+    public User getByLogin(String userName, String passW) {
+        Connection connection = null;
+        User user = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from USERS where userName = ? and passW = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, getHashedPassword(passW));
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = new User();
+                user.setUserId(resultSet.getLong("UserID"));
+                user.setFirstName(resultSet.getString("FirstName"));
+                user.setLastName(resultSet.getString("LastName"));
+                user.setUserName(resultSet.getString("UserName"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setCoins(resultSet.getFloat("Coins"));
+            }
+        } catch (Throwable e) {
+            System.out.println("Exception while executing UserDAOImpl.getByLogin()");
+            e.printStackTrace();
+            throw new DBException(e);
+        } finally {
+            closeConnection(connection);
+        }
+
+        return user;
+    }
+
+    private String getHashedPassword(String passW) {
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        passwordEncryptor.setAlgorithm("SHA-1");
+        passwordEncryptor.setPlainDigest(true);
+        return passwordEncryptor.encryptPassword(passW);
+    }
 }

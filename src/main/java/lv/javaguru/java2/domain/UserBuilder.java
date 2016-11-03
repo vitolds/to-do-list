@@ -4,6 +4,9 @@ public class UserBuilder {
 
     private String firstName;
     private String lastName;
+    private String userName;
+    private String email;
+    private int coins;
 
 
     private UserBuilder() {}
@@ -16,6 +19,9 @@ public class UserBuilder {
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setUserName(userName);
+        user.setEmail(email);
+        user.setCoins(coins);
         return user;
     }
 
@@ -29,4 +35,18 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public UserBuilder withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public UserBuilder withCoins(int coins) {
+        this.coins = coins;
+        return this;
+    }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDAO {
 
-    void create(User user);
+    void create(User user, String passW);
 
     User getById(Long id);
 
@@ -16,4 +16,5 @@ public interface UserDAO {
 
     List<User> getAll();
 
+    User getByLogin(String userName, String passW);
 }
