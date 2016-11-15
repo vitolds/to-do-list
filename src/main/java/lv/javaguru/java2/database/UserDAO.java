@@ -17,4 +17,8 @@ public interface UserDAO {
     List<User> getAll();
 
     User getByLogin(String userName, String passW);
+
+    boolean emailExists(String email);
+
+    boolean userNameExists(String userName);
 }

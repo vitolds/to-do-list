@@ -154,7 +154,7 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from USERS where userName = ? and passW = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("select * from USERS where UserName = ? and passW = ?", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, getHashedPassword(passW));
             preparedStatement.execute();
@@ -180,10 +180,54 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         return user;
     }
 
+    @Override
+    public boolean userNameExists(String userName) {
+
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from USERS where UserName = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, userName);
+            preparedStatement.execute();
+            if (!preparedStatement.executeQuery().next()) return false;
+                    else return true;
+        } catch (Throwable e) {
+            System.out.println("Exception while executing UserDAOImpl.userNameExists()");
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from USERS where Email = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, email);
+            preparedStatement.execute();
+            if (!preparedStatement.executeQuery().next()) return false;
+                    else return true;
+        } catch (Throwable e) {
+            System.out.println("Exception while executing UserDAOImpl.userNameExists()");
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    // Method used to hash a password with the specified algorithm
     private String getHashedPassword(String passW) {
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm("SHA-1");
         passwordEncryptor.setPlainDigest(true);
         return passwordEncryptor.encryptPassword(passW);
+
+        // Improve the implementation by adding the salt to the hash
     }
 }

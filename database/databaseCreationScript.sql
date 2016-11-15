@@ -10,21 +10,22 @@ use java2;
 drop table if exists users;
 
 create table if not exists users (
-	UserID int not null auto_increment,
+  UserID int not null auto_increment,
   FirstName varchar(20),
   LastName varchar(20),
-  UserName varchar(16) not null,
+  UserName varchar(16) not null unique,
   PassW varchar(255) not null, -- Password hash + salt ( ~255 )
-  Email varchar(255) not null,
+  Email varchar(255) not null unique,
   Coins float(9, 2) default 0,
   primary key (UserID)
 )
 ENGINE = InnoDB
-AUTO_INCREMENT = 1002;
+AUTO_INCREMENT = 1;
 
 alter table users
-add index UserName (UserName),
-add index PassW (PassW);
+add index UserNameI (UserName),
+add index EmailI (Email),
+add index PassWI (PassW);
 
 -- Users table end
 
