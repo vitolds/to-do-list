@@ -29,8 +29,8 @@ public class UserDAOImplTest extends DBUnitTestCase {
         User user = createUser()
                 .withFirstName("F")
                 .withLastName("L")
-                .withUserName("something2")
-                .withEmail("something@gmail.com").build();
+                .withUserName("something5")
+                .withEmail("salgbafnklfasf@gmail.com").build();
 
         System.out.println(registerService.registerUser(user, "P") ? registerService.SUCCESS_MESSAGE : registerService.getMessage());
 

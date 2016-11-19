@@ -23,20 +23,23 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public boolean registerUser(User user, String password) {
+
+        if (!userValidator.validateUsername(user.getUserName())) {
+            message = userValidator.getMessage();
+            return false;
+        }
+        if (!userValidator.validateEmail(user.getEmail())) {
+            message = userValidator.getMessage();
+            return false;
+        }
+
         try {
             userDAO.create(user, password);
-        } catch(DBException e) {
-            if (!userValidator.validateUsername(user.getUserName())) {
-                message = userValidator.getMessage();
-                return false;
-            }
-            if (!userValidator.validateEmail(user.getEmail())) {
-                message = userValidator.getMessage();
-                return false;
-            }
+        } catch (DBException e) {
             message = "Something went wrong, try to check syntax";
             return false;
         }
+
         return true;
     }
 }
