@@ -55,6 +55,37 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 1;
 -- Tasks table end --
 
+-- -----------------------------------------------------
+-- Table `parent`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `parent` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(60) NOT NULL,
+  `color` VARCHAR(45) NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB;
+-- Parent table end --
+
+-- -----------------------------------------------------
+-- Table `ToDoList_child`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ToDoList_child` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(60) NOT NULL,
+  `Todo id` INT UNSIGNED NOT NULL,
+  `color` VARCHAR(45) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+  CONSTRAINT `Todo id`
+    FOREIGN KEY (`id`)
+    REFERENCES `parent` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+-- Child table end --
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
