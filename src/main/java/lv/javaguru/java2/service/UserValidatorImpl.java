@@ -2,13 +2,17 @@ package lv.javaguru.java2.service;
 
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Vitolds on 11/15/2016.
  */
+@Component
 public class UserValidatorImpl implements UserValidator {
 
-    UserDAO userDAO = new UserDAOImpl();
+    @Autowired
+    UserDAO userDAO;
 
     private byte usernameLength = 16;
     private int emailLength = 255;
