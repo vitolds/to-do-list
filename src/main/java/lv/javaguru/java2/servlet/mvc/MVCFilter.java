@@ -8,6 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class MVCFilter implements Filter {
         }
         controllers = new HashMap<>();
         controllers.put("/hello", getBean(HelloWorldController.class));
+        controllers.put("/", getBean(HomePageController.class));
     }
 
     @Override
@@ -39,21 +41,25 @@ public class MVCFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
+        HttpSession httpSession = req.getSession();
+
         String contextURI = req.getServletPath();
         String method = req.getMethod();
 
         if (contextURI.contains("/css")) {
             filterChain.doFilter(request, response);
+        } else if (httpSession.getAttribute("user") == null && !contextURI.equals("/")) {
+            resp.sendRedirect("/java2");
         } else {
             MVCController controller = controllers.get(contextURI);
             MVCModel model;
+
             if (method.equalsIgnoreCase("GET")){
                 model = controller.processGet(req);
             }
             else {
                 model = controller.processPost(req);
             }
-
             req.setAttribute("data", model.getData());
 
             ServletContext context = req.getServletContext();
