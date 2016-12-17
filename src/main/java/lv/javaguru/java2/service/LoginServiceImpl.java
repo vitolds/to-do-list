@@ -15,10 +15,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     UserDAO userDAO;
-    User user;
 
     @Override
     public User authenticate (String login, String password) {
+        User user = null;
         try {
             user = userDAO.getByLogin(login, password);
         } catch(DBException e) {

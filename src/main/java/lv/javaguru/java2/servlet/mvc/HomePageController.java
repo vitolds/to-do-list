@@ -10,7 +10,7 @@ public class HomePageController implements MVCController {
     @Override
     public MVCModel processGet(HttpServletRequest req) {
 
-        return new MVCModel("/homePage.jsp", "Home");
+        return new MVCModel("/homePage.jsp", "Fields with <span style=\"color: red\">\" * \"</span> are necessary");
     }
 
     @Override

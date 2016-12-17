@@ -8,6 +8,5 @@ import lv.javaguru.java2.domain.User;
 public interface RegisterService {
 
     String SUCCESS_MESSAGE = "Your account has been created successfully";
-    String getMessage();
-    boolean registerUser(User user, String password);
+    ValidatorMessage registerUser(User user, String password);
 }

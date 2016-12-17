@@ -20,32 +20,19 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     UserValidator userValidator;
 
-    private String message = null;
-
     @Override
-    public String getMessage() {
-        return message;
-    }
+    public ValidatorMessage registerUser(User user, String password) {
 
-    @Override
-    public boolean registerUser(User user, String password) {
+        ValidatorMessage validatorMessage = userValidator.validateUser(user, password);
 
-        if (!userValidator.validateUsername(user.getUserName())) {
-            message = userValidator.getMessage();
-            return false;
+        if (!validatorMessage.isSuccess()) return validatorMessage;
+            else {
+                try {
+                    userDAO.create(user, password);
+                } catch (DBException e) {
+                    return new ValidatorMessage(false, "Something went wrong, try to check syntax");
+                }
         }
-        if (!userValidator.validateEmail(user.getEmail())) {
-            message = userValidator.getMessage();
-            return false;
-        }
-
-        try {
-            userDAO.create(user, password);
-        } catch (DBException e) {
-            message = "Something went wrong, try to check syntax";
-            return false;
-        }
-
-        return true;
+        return new ValidatorMessage(true, "<span style=\"color: green\">" + SUCCESS_MESSAGE + "</span>");
     }
 }
