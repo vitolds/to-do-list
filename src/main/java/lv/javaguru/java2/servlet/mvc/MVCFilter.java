@@ -34,6 +34,8 @@ public class MVCFilter implements Filter {
         controllers.put("/hello", getBean(HelloWorldController.class));
         controllers.put("/", getBean(HomePageController.class));
         controllers.put("/register", getBean(RegisterController.class));
+        controllers.put("/login", getBean(LoginController.class));
+        controllers.put("/profile", getBean(ProfileController.class));
     }
 
     @Override
@@ -49,7 +51,8 @@ public class MVCFilter implements Filter {
 
         if (contextURI.contains("/css")) {
             filterChain.doFilter(request, response);
-        } else if (httpSession.getAttribute("user") == null && !contextURI.equals("/") && !contextURI.equals("/register")) {
+        } else if (httpSession.getAttribute("user") == null && !contextURI.equals("/") && !contextURI.equals("/register")
+                && !contextURI.equals("/login")) {
             resp.sendRedirect("/java2");
         } else {
             MVCController controller = controllers.get(contextURI);

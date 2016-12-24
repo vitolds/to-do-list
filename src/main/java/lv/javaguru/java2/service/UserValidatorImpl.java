@@ -3,6 +3,7 @@ package lv.javaguru.java2.service;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,7 +56,7 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     @Override
-    public ValidatorMessage validateUser(User user, String password) {
+    public ValidatorMessage validateUser(User user) {
         ValidatorMessage validatorMessage;
 
         // Username validation
@@ -67,10 +68,21 @@ public class UserValidatorImpl implements UserValidator {
         if (!validatorMessage.isSuccess()) return validatorMessage;
 
         // Password validation
-        validatorMessage = validatePassword(password);
+        validatorMessage = validatePassword(user.getPassword());
         if (!validatorMessage.isSuccess()) return validatorMessage;
 
         return new ValidatorMessage(true);
+    }
+
+    // Method used to hash a password with the specified algorithm
+    @Override
+    public String getHashedPassword(String passW) {
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        passwordEncryptor.setAlgorithm("SHA-1");
+        passwordEncryptor.setPlainDigest(true);
+        return passwordEncryptor.encryptPassword(passW);
+
+        // Improve the implementation by adding the salt to the hash
     }
 
     private boolean valEmailSynt(String email) {

@@ -69,7 +69,7 @@ public class TaskDAOImpl extends DAOImpl implements TaskDAO {
                 task.setText(resultSet.getString("Text"));
                 task.setCreationDateTime(resultSet.getTimestamp("CreationDateTime"));
                 task.setDeadline(resultSet.getTimestamp("Deadline"));
-                task.setUser(userDAO.getById(resultSet.getLong("UserID")));
+                task.setUser((User) userDAO.getById(resultSet.getLong("UserID")));
                 task.setMainTask(resultSet.getBoolean("MainTask"));
                 task.setPriority(resultSet.getInt("Priority"));
                 task.setDone(resultSet.getBoolean("Done"));
@@ -100,7 +100,7 @@ public class TaskDAOImpl extends DAOImpl implements TaskDAO {
                 task.setText(resultSet.getString("Text"));
                 task.setCreationDateTime(resultSet.getTimestamp("CreationDateTime"));
                 task.setDeadline(resultSet.getTimestamp("Deadline"));
-                task.setUser(userDAO.getById(resultSet.getLong("UserID")));
+                task.setUser((User) userDAO.getById(resultSet.getLong("UserID")));
                 task.setMainTask(resultSet.getBoolean("MainTask"));
                 task.setPriority(resultSet.getInt("Priority"));
                 task.setDone(resultSet.getBoolean("Done"));
