@@ -5,16 +5,8 @@ import lv.javaguru.java2.domain.User;
 
 import java.util.List;
 
-public interface TaskDAO {
+public interface TaskDAO extends GenericHibernateDAO<Task>{
 
-    void create(Task task);
-
-    Task getById(Long id);
-
-    void delete(Long id);
-
-    void update(Task task);
-
-    List<Task> getByUser(User user);
+    List<Task> getAllByUser(User user);
 
 }

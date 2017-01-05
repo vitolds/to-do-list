@@ -1,24 +1,49 @@
 package lv.javaguru.java2.domain;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name="tasks")
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "TaskID", nullable = false)
+    private int taskId;
 
-    private Long taskId;
+    @Column(name = "Name", nullable = false)
     private String name;
-    private String text;
-    private Timestamp creationDateTime;
-    private Timestamp deadline;
-    private User user;
-    private Boolean isMainTask;
-    private int priority;
-    private Boolean done;
 
-    public Long getTaskId() {
+    @Column(name = "Text")
+    private String text;
+
+    @Column(name = "CreationDateTime", nullable = false)
+    private Timestamp creationDateTime;
+
+    @Column(name = "Deadline")
+    private Timestamp deadline;
+
+    @Column(name = "UserID", nullable = false)
+    private int userID;
+
+    @Column(name = "MainTask")
+    @Type(type = "org.hibernate.type.BooleanType")
+    private boolean isMainTask;
+
+    @Column(name = "Priority", columnDefinition = "TINYINT")
+    private int priority;
+
+    @Column(name = "Done")
+    @Type(type = "org.hibernate.type.BooleanType")
+    private boolean done;
+
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(Long taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
@@ -54,19 +79,19 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public Boolean getMainTask() {
+    public boolean isMainTask() {
         return isMainTask;
     }
 
-    public void setMainTask(Boolean mainTask) {
+    public void setMainTask(boolean mainTask) {
         isMainTask = mainTask;
     }
 
@@ -78,11 +103,12 @@ public class Task {
         this.priority = priority;
     }
 
-    public Boolean getDone() {
+    public boolean isDone() {
         return done;
     }
 
-    public void setDone(Boolean done) {
+    public void setDone(boolean done) {
         this.done = done;
     }
+
 }

@@ -1,13 +1,16 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.TaskDAO;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.tasks.TaskCreationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Component
 public class TaskCreationController implements MVCController{
@@ -17,6 +20,9 @@ public class TaskCreationController implements MVCController{
 
     @Autowired
     UserDAO userDAO;
+
+    @Autowired
+    TaskDAO taskDAO;
 
     @Override
     public MVCModel processGet(HttpServletRequest req) {
@@ -42,12 +48,10 @@ public class TaskCreationController implements MVCController{
             deadline = "";
         }
         String priority = req.getParameter("taskPriority");
-
-
         String isMainTask = req.getParameter("isMainTask");
 
-        User user = new User();
-        user.setUserId(1l);
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
 
         try {
             Task task = taskCreationService.createTask(name, text, deadline, user, isMainTask, priority);
@@ -60,4 +64,5 @@ public class TaskCreationController implements MVCController{
         return new MVCModel("/taskCreationPage.jsp",
                 "<div class=\"alert alert-success\" role=\"alert\">" + "Task created" + "</div>");
     }
+
 }

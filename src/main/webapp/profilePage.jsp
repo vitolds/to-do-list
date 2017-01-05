@@ -15,5 +15,7 @@
         User user = (User) request.getSession().getAttribute("user");
     %>
     <%= user.getUserName()%>
+    <br>
+    <a href="/java2/create_task">Create task</a>
 </body>
 </html>

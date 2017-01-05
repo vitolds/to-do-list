@@ -57,13 +57,6 @@ public class TaskValidatorImpl implements TaskValidator {
             throw e;
         }
 
-        //Task isDone validation
-//        try {
-//            validateIsDone(isDone);
-//        } catch(IllegalArgumentException e) {
-//            throw e;
-//        }
-
     }
 
     @Override
@@ -90,7 +83,6 @@ public class TaskValidatorImpl implements TaskValidator {
     @Override
     public void validateDeadline(String deadline) {
 
-//        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
         SimpleDateFormat format = new java.text.SimpleDateFormat("DD.MM.yyyy HH:mm");
 
         if (deadline.isEmpty()) {

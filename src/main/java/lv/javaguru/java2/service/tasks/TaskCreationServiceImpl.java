@@ -6,10 +6,12 @@ import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
 @Component
+@Transactional
 public class TaskCreationServiceImpl implements TaskCreationService {
 
     @Autowired
@@ -35,16 +37,12 @@ public class TaskCreationServiceImpl implements TaskCreationService {
             throw e;
         }
 
-//        Task task = new Task();
-//        task.setName("Task1");
-
-
         Task task = new Task();
         task.setName(name);
         task.setText(text);
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
         task.setDeadline(Utils.convertStringToTimestamp(deadline, DATETIME_STRING_FORMAT));
-        task.setUser(user);
+        task.setUserID(user.getUserId());
         if (isMainTask == null) {
             task.setMainTask(false);
         } else if (isMainTask.equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
@@ -52,9 +50,9 @@ public class TaskCreationServiceImpl implements TaskCreationService {
         }
         task.setPriority(Integer.parseInt(priority));
         task.setDone(false);
-//
-        taskDAO.create(task);
 
+        taskDAO.create(task);
+        
         return task;
     }
 }

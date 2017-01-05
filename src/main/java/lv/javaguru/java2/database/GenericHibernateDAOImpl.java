@@ -28,12 +28,12 @@ public class GenericHibernateDAOImpl<T> implements GenericHibernateDAO<T>{
     }
 
     @Override
-    public T getById(long id)  throws DBException  {
+    public T getById(int id)  throws DBException  {
         return (T)sessionFactory.getCurrentSession().get(persistentClass, id);
     }
 
     @Override
-    public void delete(long id)   throws DBException {
+    public void delete(int id)   throws DBException {
         Session session = sessionFactory.getCurrentSession();
         T obj = (T) session.get(persistentClass, id);
         session.delete(obj);

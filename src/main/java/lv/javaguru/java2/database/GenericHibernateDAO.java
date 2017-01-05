@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface GenericHibernateDAO<T> {
     void create(T obj);
-    T getById(long id);
-    void delete(long id);
+    T getById(int id);
+    void delete(int id);
     void update(T obj);
     List<T> getAll();
 }
