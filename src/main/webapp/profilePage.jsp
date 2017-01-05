@@ -9,13 +9,39 @@
 <html>
 <head>
     <title>Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/profilePageStyle.css">
 </head>
 <body>
-    <%
-        User user = (User) request.getSession().getAttribute("user");
-    %>
-    <%= user.getUserName()%>
-    <br>
-    <a href="/java2/create_task">Create task</a>
+    <div class="main-container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="navbar-brand">TODO<span class="glyphicon glyphicon-book"></span>List</span>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a class="glyphicon glyphicon-user" href="/java2/profile"></a></li>
+                    <li><a href="#">?</a></li>
+                    <li><a href="#">?</a></li>
+                    <li><a href="#">?</a></li>
+                    <li><a href="#">?</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/java2/logout">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="info-container">
+            <%
+                User user = (User) request.getSession().getAttribute("user");
+            %>
+            <div class="profile-info">
+                <nobr>
+                    <h4>Hello <%= user.getUserName()%>! <a class="glyphicon glyphicon-cog" href="#"></a></h4>
+                </nobr>
+                <h5><span class="label label-info">Coins <%= user.getCoins()%></span></h5>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

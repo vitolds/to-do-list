@@ -10,11 +10,11 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/homePageStyle.css">
 </head>
 <body>
     <div class="text-center heading">
-        <h1><b>TO DO List</b></h1>
+        <h1><b>TODO List</b></h1>
     </div>
     <div>
         <div class="row">
