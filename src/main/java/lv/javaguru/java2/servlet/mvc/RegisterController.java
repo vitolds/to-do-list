@@ -23,20 +23,25 @@ public class RegisterController implements MVCController {
 
     @Override
     public MVCModel processGet(HttpServletRequest req) {
-        return null;
+        return new MVCModel("/redirect.jsp", "/java2");
     }
 
     @Override
     public MVCModel processPost(HttpServletRequest req) {
         User user = createUser()
-                .withUserName(req.getParameter("userName").toString())
-                .withEmail(req.getParameter("email").toString())
-                .withFirstName(req.getParameter("firstName").toString())
-                .withLastName(req.getParameter("lastName").toString())
+                .withUserName(req.getParameter("userName"))
+                .withEmail(req.getParameter("email"))
+                .withFirstName(req.getParameter("firstName"))
+                .withLastName(req.getParameter("lastName"))
                 .build();
+        user.setPassword(req.getParameter("password"));
 
-        ValidatorMessage validatorMessage = registerService.registerUser(user, req.getParameter("password").toString());
+        ValidatorMessage validatorMessage = registerService.registerUser(user);
 
-        return new MVCModel("/homePage.jsp", validatorMessage.getMessage());
+        if (validatorMessage.isSuccess()) return new MVCModel("/homePage.jsp",
+                "<span style=\"color: green\">" + validatorMessage.getMessage() + "</span>");
+            else return new MVCModel("/homePage.jsp",
+                "<span style=\"color: red\">" + validatorMessage.getMessage() + "</span>");
+
     }
 }

@@ -11,9 +11,7 @@
     background-color: rgba(20, 20, 20, 0.3);
 }
 
-.message {
-    border: dashed thin;
-    background-color: white;
+.mes {
     color: black;
     margin-top: 5px;
     float: right;
