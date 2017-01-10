@@ -1,13 +1,11 @@
 package lv.javaguru.java2.servlet.mvc;
 
-import lv.javaguru.java2.database.TaskDAO;
-import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Task;
+import lv.javaguru.java2.domain.TaskDTO;
 import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.service.tasks.TaskCreationService;
+import lv.javaguru.java2.service.tasks.TaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,13 +14,7 @@ import javax.servlet.http.HttpSession;
 public class TaskCreationController implements MVCController{
 
     @Autowired
-    TaskCreationService taskCreationService;
-
-    @Autowired
-    UserDAO userDAO;
-
-    @Autowired
-    TaskDAO taskDAO;
+    TaskFactory taskFactory;
 
     @Override
     public MVCModel processGet(HttpServletRequest req) {
@@ -33,28 +25,34 @@ public class TaskCreationController implements MVCController{
     @Override
     public MVCModel processPost(HttpServletRequest req) {
 
-        String name = req.getParameter("taskName");
-        String text = req.getParameter("taskText");
         String deadlineDate = req.getParameter("deadlineDate");
         String deadlineTime = req.getParameter("deadlineTime");
         String deadline;
-        if (!deadlineDate.isEmpty()) {
-            if (!deadlineTime.isEmpty()) {
-                deadline = deadlineDate + " " + deadlineTime;
-            } else {
-                deadline = deadlineDate + " 00:00";
-            }
-        } else {
+        if (deadlineDate.isEmpty() && deadlineTime.isEmpty()) {
             deadline = "";
+        } else if(deadlineTime.isEmpty()) {
+            deadline = deadlineDate + " 00:00";
+        } else {
+            deadline = deadlineDate + " " + deadlineTime;
         }
-        String priority = req.getParameter("taskPriority");
-        String isMainTask = req.getParameter("isMainTask");
+
+        TaskDTO taskDTO = new TaskDTO(
+                "",
+                req.getParameter("taskName"),
+                req.getParameter("taskText"),
+                "",
+                deadlineDate,
+                deadlineTime,
+                deadline,
+                req.getParameter("isMainTask"),
+                req.getParameter("taskPriority"),
+                "");
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
 
         try {
-            Task task = taskCreationService.createTask(name, text, deadline, user, isMainTask, priority);
+            Task task = taskFactory.create(taskDTO, user);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return new MVCModel("/taskCreationPage.jsp",

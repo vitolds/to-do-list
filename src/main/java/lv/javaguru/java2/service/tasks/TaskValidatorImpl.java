@@ -1,6 +1,7 @@
 package lv.javaguru.java2.service.tasks;
 
 
+import lv.javaguru.java2.domain.TaskDTO;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -13,50 +14,28 @@ public class TaskValidatorImpl implements TaskValidator {
     private final int MAX_TEXT_LENGTH = 255;
     private final int MIN_PRIORITY = 1;
     private final int MAX_PRIORITY = 3;
-    public static final String CHECKBOX_VALUE = "1";
+    static final String CHECKBOX_VALUE = "1";
 
     @Override
-    public void validateTask(String name,
-                             String text,
-                             String deadline,
-                             String isMain,
-                             String priority) {
+    public void validateTask(TaskDTO taskDTO) throws IllegalArgumentException {
 
         // Task name validation
-        try {
-            validateName(name);
-        } catch(IllegalArgumentException e) {
-            throw e;
-        }
+        validateName(taskDTO.getName());
 
         //Task text validation
-        try {
-            validateText(text);
-        } catch(IllegalArgumentException e) {
-            throw e;
-        }
+        validateText(taskDTO.getText());
 
         //Task deadline validation
-        try {
-            validateDeadline(deadline);
-        } catch(IllegalArgumentException e) {
-            throw e;
-        }
+        validateDeadline(taskDTO.getDeadline());
 
         //Task isMain validation
-        try {
-            validateIsMain(isMain);
-        } catch(IllegalArgumentException e) {
-            throw e;
-        }
+        validateIsMain(taskDTO.getIsMainTask());
 
         //Task priority validation
-        try {
-            validatePriority(priority);
-        } catch(IllegalArgumentException e) {
-            throw e;
-        }
+        validatePriority(taskDTO.getPriority());
 
+        //Task done validation
+        validateIsDone(taskDTO.getDone());
     }
 
     @Override
@@ -114,7 +93,6 @@ public class TaskValidatorImpl implements TaskValidator {
     @Override
     public void validateIsDone(String isDone) {
         if (isDone.equals("") || isDone.equals(CHECKBOX_VALUE) ) {
-            return;
         } else {
             throw new IllegalArgumentException("Task done attribute is not valid");
         }
@@ -123,9 +101,7 @@ public class TaskValidatorImpl implements TaskValidator {
     @Override
     public void validateIsMain(String isMain) {
         if (isMain == null) {
-            return;
         } else if (isMain.equals(CHECKBOX_VALUE)) {
-            return;
         } else {
             throw new IllegalArgumentException("Task main attribute is not valid");
         }

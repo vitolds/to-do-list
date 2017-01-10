@@ -38,6 +38,7 @@ public class MVCFilter implements Filter {
         controllers.put("/profile", getBean(ProfileController.class));
         controllers.put("/create_task", getBean(TaskCreationController.class));
         controllers.put("/logout", getBean(LogoutController.class));
+        controllers.put("/tasks", getBean(TasksController.class));
     }
 
     @Override

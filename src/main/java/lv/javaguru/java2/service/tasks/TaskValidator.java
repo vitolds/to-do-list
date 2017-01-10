@@ -1,14 +1,10 @@
 package lv.javaguru.java2.service.tasks;
 
-import lv.javaguru.java2.domain.Task;
+import lv.javaguru.java2.domain.TaskDTO;
 
 public interface TaskValidator {
 
-    void validateTask(String name,
-                      String text,
-                      String deadline,
-                      String isMain,
-                      String priority);
+    void validateTask(TaskDTO taskDTO);
 
     void validateName(String name);
     void validateText(String text);

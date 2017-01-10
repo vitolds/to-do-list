@@ -22,7 +22,7 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a class="glyphicon glyphicon-user" href="/java2/profile"></a></li>
                     <li><a href="/java2/create_task">Create task</a></li>
-                    <li><a href="#">?</a></li>
+                    <li><a href="/java2/tasks">Tasks</a></li>
                     <li><a href="#">?</a></li>
                     <li><a href="#">?</a></li>
                 </ul>

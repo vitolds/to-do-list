@@ -2,6 +2,7 @@ package lv.javaguru.java2.service.tasks;
 
 import lv.javaguru.java2.database.TaskDAO;
 import lv.javaguru.java2.domain.Task;
+import lv.javaguru.java2.domain.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.sql.Timestamp;
 
 @Component
 @Transactional
-public class TaskCreationServiceImpl implements TaskCreationService {
+public class TaskFactoryImpl implements TaskFactory {
 
     @Autowired
     TaskDAO taskDAO;
@@ -23,32 +24,27 @@ public class TaskCreationServiceImpl implements TaskCreationService {
     private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
 
     @Override
-    public Task createTask(String name,
-                           String text,
-                           String deadline,
-                           User user,
-                           String isMainTask,
-                           String priority) {
+    public Task create(TaskDTO taskDTO, User user) {
 
         try {
-            taskValidator.validateTask(name, text, deadline, isMainTask, priority);
+            taskValidator.validateTask(taskDTO);
         }
         catch(IllegalArgumentException e) {
             throw e;
         }
 
         Task task = new Task();
-        task.setName(name);
-        task.setText(text);
+        task.setName(taskDTO.getName());
+        task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
-        task.setDeadline(Utils.convertStringToTimestamp(deadline, DATETIME_STRING_FORMAT));
+        task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
         task.setUserID(user.getUserId());
-        if (isMainTask == null) {
+        if (taskDTO.getIsMainTask() == null) {
             task.setMainTask(false);
-        } else if (isMainTask.equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
+        } else if (taskDTO.getIsMainTask().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
             task.setMainTask(true);
         }
-        task.setPriority(Integer.parseInt(priority));
+        task.setPriority(Integer.parseInt(taskDTO.getPriority()));
         task.setDone(false);
 
         taskDAO.create(task);
