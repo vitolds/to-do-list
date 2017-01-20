@@ -6,24 +6,29 @@ import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.tasks.TaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@Component
-public class TaskCreationController implements MVCController{
+@Controller
+public class TaskCreationController{
 
     @Autowired
     TaskFactory taskFactory;
 
-    @Override
-    public MVCModel processGet(HttpServletRequest req) {
-
-        return new MVCModel("/taskCreationPage.jsp", "");
+    @RequestMapping(value="create_task", method = {RequestMethod.GET})
+    public ModelAndView processGet(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented
+        else return new ModelAndView("taskCreationPage", "model", null);
     }
 
-    @Override
-    public MVCModel processPost(HttpServletRequest req) {
+    @RequestMapping(value="create_task", method={RequestMethod.POST})
+    public ModelAndView processPost(HttpServletRequest req) {
 
         String deadlineDate = req.getParameter("deadlineDate");
         String deadlineTime = req.getParameter("deadlineTime");
@@ -55,11 +60,11 @@ public class TaskCreationController implements MVCController{
             Task task = taskFactory.create(taskDTO, user);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return new MVCModel("/taskCreationPage.jsp",
+            return new ModelAndView("taskCreationPage", "data",
                     "<div class=\"alert alert-danger\" role=\"alert\">" + e.getMessage() + "</div>");
         }
 
-        return new MVCModel("/taskCreationPage.jsp",
+        return new ModelAndView("taskCreationPage", "data",
                 "<div class=\"alert alert-success\" role=\"alert\">" + "Task created" + "</div>");
     }
 

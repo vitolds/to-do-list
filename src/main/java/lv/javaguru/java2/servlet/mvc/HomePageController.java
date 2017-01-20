@@ -1,27 +1,23 @@
 package lv.javaguru.java2.servlet.mvc;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@Component
-public class HomePageController implements MVCController {
+@Controller
+public class HomePageController {
 
-    @Override
-    public MVCModel processGet(HttpServletRequest req) {
-
+    @RequestMapping(value="/", method={RequestMethod.GET})
+    public ModelAndView processGet (HttpServletRequest req) {
         HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) {
-            return new MVCModel("/homePage.jsp", "");
+        if (session.getAttribute("user") == null) { //Remove when security implemented
+            return new ModelAndView("homePage", "model", null);
         } else {
-            return new MVCModel("/redirect.jsp", "/java2/profile");
+            return new ModelAndView("redirect", "data", "/profile");
         }
     }
-
-    @Override
-    public MVCModel processPost(HttpServletRequest req) {
-        return null;
-    }
-
 }

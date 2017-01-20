@@ -7,6 +7,10 @@ import lv.javaguru.java2.service.RegisterServiceImpl;
 import lv.javaguru.java2.service.ValidatorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,19 +19,19 @@ import static lv.javaguru.java2.domain.UserBuilder.createUser;
 /**
  * Created by Vitolds on 12/17/2016.
  */
-@Component
-public class RegisterController implements MVCController {
+@Controller
+public class RegisterController {
 
     @Autowired
     RegisterService registerService;
 
-    @Override
-    public MVCModel processGet(HttpServletRequest req) {
-        return new MVCModel("/redirect.jsp", "/java2");
+    @RequestMapping(value="register", method={RequestMethod.GET})
+    public ModelAndView processGet() {
+        return new ModelAndView("redirect", "data", "/");
     }
 
-    @Override
-    public MVCModel processPost(HttpServletRequest req) {
+    @RequestMapping(value="register", method={RequestMethod.POST})
+    public ModelAndView processPost(HttpServletRequest req) {
         User user = createUser()
                 .withUserName(req.getParameter("userName"))
                 .withEmail(req.getParameter("email"))
@@ -38,9 +42,9 @@ public class RegisterController implements MVCController {
 
         ValidatorMessage validatorMessage = registerService.registerUser(user);
 
-        if (validatorMessage.isSuccess()) return new MVCModel("/homePage.jsp",
+        if (validatorMessage.isSuccess()) return new ModelAndView("homePage", "data",
                 "<span style=\"color: green\">" + validatorMessage.getMessage() + "</span>");
-            else return new MVCModel("/homePage.jsp",
+        else return new ModelAndView("homePage", "data",
                 "<span style=\"color: red\">" + validatorMessage.getMessage() + "</span>");
 
     }

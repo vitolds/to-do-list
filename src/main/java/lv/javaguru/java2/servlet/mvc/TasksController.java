@@ -7,6 +7,10 @@ import lv.javaguru.java2.service.tasks.TaskFactory;
 import lv.javaguru.java2.service.tasks.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,8 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class TasksController implements MVCController {
+@Controller
+public class TasksController {
 
     @Autowired
     TaskService taskService;
@@ -23,10 +27,12 @@ public class TasksController implements MVCController {
     @Autowired
     TaskFactory taskFactory;
 
-    @Override
-    public MVCModel processGet(HttpServletRequest req) {
+    @RequestMapping(value="tasks", method={RequestMethod.GET})
+    public ModelAndView processGet(HttpServletRequest req) {
 
         HttpSession session = req.getSession();
+        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented//Remove when security implemented
+
         User user = (User) session.getAttribute("user");
 
         List<Task> tasks = taskService.getAllTasksByUser(user);
@@ -36,11 +42,11 @@ public class TasksController implements MVCController {
             tasksDTO.add(convertTaskToTaskDTO(task));
         }
 
-        return new MVCModel("/tasksPage.jsp", tasksDTO);
+        return new ModelAndView("tasksPage", "data", tasksDTO);
     }
 
-    @Override
-    public MVCModel processPost(HttpServletRequest req) {
+    @RequestMapping(value="tasks", method={RequestMethod.POST})
+    public ModelAndView processPost(HttpServletRequest req) {
 
         String deadlineDate = req.getParameter("deadlineDate");
         String deadlineTime = req.getParameter("deadlineTime");
@@ -72,11 +78,11 @@ public class TasksController implements MVCController {
             taskService.update(taskDTO, user);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return new MVCModel("/ajaxPage.jsp",
+            return new ModelAndView("ajaxPage", "data",
                     "<div class=\"alert alert-danger\" role=\"alert\">" + e.getMessage() + "</div>");
         }
 
-        return new MVCModel("/ajaxPage.jsp",
+        return new ModelAndView("ajaxPage", "data",
                 "<div class=\"alert alert-success\" role=\"alert\">" + "Task created" + "</div>");
 
     }
