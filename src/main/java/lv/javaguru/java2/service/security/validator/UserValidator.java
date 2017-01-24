@@ -1,4 +1,4 @@
-package lv.javaguru.java2.service;
+package lv.javaguru.java2.service.security.validator;
 
 import lv.javaguru.java2.domain.User;
 
@@ -10,5 +10,4 @@ public interface UserValidator {
     ValidatorMessage validateUsername(String username);
     ValidatorMessage validateEmail(String email);
     ValidatorMessage validatePassword(String password);
-    String getHashedPassword(String passW);
 }

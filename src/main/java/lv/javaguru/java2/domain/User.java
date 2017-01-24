@@ -1,21 +1,23 @@
 package lv.javaguru.java2.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="UserId")
+    private long userId;
     @Column(name="FirstName")
     private String firstName;
     @Column(name="LastName")
     private String lastName;
     @Column(name="UserName", nullable = false)
-    private String userName;
+    private String username;
     @Column(name="Email", nullable = false)
     private String email;
     @Column(name="Coins")
@@ -23,11 +25,47 @@ public class User {
     @Column(name="PassW", nullable = false)
     private String password;
 
-    public int getUserId() {
+    @Transient
+    private List<UserRole> roles;
+    @Transient
+    private List<Task> tasks;
+
+    public User() {
+
+    }
+
+    public User(User user) {
+        this.userId = user.userId;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.username = user.username;
+        this.email = user.email;
+        this.password = user.password;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="user")
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="user")
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -47,9 +85,9 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUserName() { return userName; }
+    public String getUsername() { return username; }
 
-    public void setUserName(String userName) { this.userName = userName; }
+    public void setUsername(String userName) { this.username = userName; }
 
     public String getEmail() { return email; }
 

@@ -3,6 +3,8 @@ package lv.javaguru.java2.domain;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,8 +12,8 @@ import java.sql.Timestamp;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "TaskID", nullable = false)
-    private int taskId;
+    @Column(name = "TaskId", nullable = false)
+    private long taskId;
 
     @Column(name = "Name", nullable = false)
     private String name;
@@ -25,8 +27,8 @@ public class Task {
     @Column(name = "Deadline")
     private Timestamp deadline;
 
-    @Column(name = "UserID", nullable = false)
-    private int userID;
+    @Column(name = "UserId", nullable = false)
+    private long userID;
 
     @Column(name = "MainTask")
     @Type(type = "org.hibernate.type.BooleanType")
@@ -39,11 +41,24 @@ public class Task {
     @Type(type = "org.hibernate.type.BooleanType")
     private boolean done;
 
-    public int getTaskId() {
+    @Transient
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="UserId")
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(int taskId) {
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 
@@ -79,11 +94,11 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public int getUserID() {
+    public long getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 

@@ -1,6 +1,6 @@
 package lv.javaguru.java2.service.tasks;
 
-import lv.javaguru.java2.database.TaskDAO;
+import lv.javaguru.java2.database.springJPA.TaskRepository;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.TaskDTO;
 import lv.javaguru.java2.domain.User;
@@ -11,23 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Transactional
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    TaskDAO taskDAO;
+    private TaskRepository taskRepository;
 
     @Autowired
-    TaskValidator taskValidator;
+    private TaskValidator taskValidator;
 
     private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
 
     @Override
     public List<Task> getAllTasksByUser(User user) {
 
-        List<Task> tasks = taskDAO.getAllByUser(user);
+        List<Task> tasks = user.getTasks();
         return tasks;
     }
 
@@ -40,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
             throw e;
         }
 
-        Task task = taskDAO.getById(Integer.parseInt(taskDTO.getTaskId()));
+        Task task = taskRepository.findOne(Long.parseLong(taskDTO.getTaskId()));
         task.setName(taskDTO.getName());
         task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
@@ -60,7 +61,7 @@ public class TaskServiceImpl implements TaskService {
             task.setDone(true);
         }
 
-        taskDAO.update(task);
+        taskRepository.save(task);
     }
 
     @Override
