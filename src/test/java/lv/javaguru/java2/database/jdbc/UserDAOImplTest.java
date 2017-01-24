@@ -1,19 +1,19 @@
 package lv.javaguru.java2.database.jdbc;
 
-import lv.javaguru.java2.database.DBException;
+import lv.javaguru.java2.database.GenericHibernateDAO;
+import lv.javaguru.java2.database.GenericHibernateDAOImpl;
 import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.LoginService;
 import lv.javaguru.java2.service.LoginServiceImpl;
-import lv.javaguru.java2.service.RegisterService;
-import lv.javaguru.java2.service.RegisterServiceImpl;
+import lv.javaguru.java2.service.security.RegisterService;
+import lv.javaguru.java2.service.security.RegisterServiceImpl;
 import org.junit.Test;
 
-import static lv.javaguru.java2.domain.UserBuilder.createUser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class UserDAOImplTest extends DBUnitTestCase {
+
 
     private UserDAO userDAO = new UserDAOImpl();
     private LoginService loginService = new LoginServiceImpl();
@@ -26,21 +26,17 @@ public class UserDAOImplTest extends DBUnitTestCase {
 
     @Test
     public void testCreate() throws Exception {
-        User user = createUser()
-                .withFirstName("F")
-                .withLastName("L")
-                .withUserName("something5")
-                .withEmail("salgbafnklfasf@gmail.com").build();
+//        User user = createUser()
+//                .withFirstName("F")
+//                .withLastName("L")
+//                .withUserName("something5")
+//                .withEmail("salgbafnklfasf@gmail.com")
+//                .build();
+//        user.setPassword("PP");
+//
+//        userDAO.create(user);
 
-        System.out.println(registerService.registerUser(user, "P") ? registerService.SUCCESS_MESSAGE : registerService.getMessage());
-
-        try {
-            System.out.println(loginService.authenticate("something", "P"));
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
-
-
+        System.out.println(userDAO.getById(1));
 //        User userFromDB = userDAO.getById(user.getUserId());
 //        assertNotNull(userFromDB);
 //        assertEquals(user.getUserId(), userFromDB.getUserId());

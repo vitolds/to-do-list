@@ -33,11 +33,11 @@
         </nav>
         <div class="info-container">
             <%
-                User user = (User) request.getSession().getAttribute("user");
+                User user = (User) request.getAttribute("data");
             %>
             <div class="profile-info">
                 <nobr>
-                    <h4>Hello <%= user.getUserName()%>! <a class="glyphicon glyphicon-cog" href="#"></a></h4>
+                    <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="#"></a></h4>
                 </nobr>
                 <h5><span class="label label-info">Coins <%= user.getCoins()%></span></h5>
             </div>

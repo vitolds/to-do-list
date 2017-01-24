@@ -1,6 +1,6 @@
 package lv.javaguru.java2.service.tasks;
 
-import lv.javaguru.java2.database.TaskDAO;
+import lv.javaguru.java2.database.springJPA.TaskRepository;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.TaskDTO;
 import lv.javaguru.java2.domain.User;
@@ -16,10 +16,10 @@ import java.sql.Timestamp;
 public class TaskFactoryImpl implements TaskFactory {
 
     @Autowired
-    TaskDAO taskDAO;
+    private TaskRepository taskRepository;
 
     @Autowired
-    TaskValidator taskValidator;
+    private TaskValidator taskValidator;
 
     private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
 
@@ -47,7 +47,7 @@ public class TaskFactoryImpl implements TaskFactory {
         task.setPriority(Integer.parseInt(taskDTO.getPriority()));
         task.setDone(false);
 
-        taskDAO.create(task);
+        taskRepository.save(task);
         
         return task;
     }
