@@ -17,14 +17,14 @@ public class UserRole {
     @Column(name="Role", nullable = false)
     private String role;
 
-    @Column(name="UserId", nullable = false)
-    private long userId;
-
-    @Transient
-    private User user;
+//    @Column(name="UserId", nullable = false)
+//    private long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="UserId", nullable = false)
+    private User user;
+
+
     public User getUser() {
         return user;
     }
@@ -41,13 +41,13 @@ public class UserRole {
         this.userRoleId = userRoleId;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+//    public long getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(long userId) {
+//        this.userId = userId;
+//    }
 
     public String getRole() {
         return role;

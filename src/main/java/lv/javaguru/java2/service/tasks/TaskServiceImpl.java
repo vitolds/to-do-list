@@ -28,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasksByUser(User user) {
 
-        List<Task> tasks = user.getTasks();
+        List<Task> tasks = taskRepository.findByUserId(user.getUserId());
         return tasks;
     }
 
@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
         task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
-        task.setUserID(user.getUserId());
+        task.setUser(user);
         if (taskDTO.getIsMainTask() == null) {
             task.setMainTask(false);
         } else if (taskDTO.getIsMainTask().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
@@ -66,13 +66,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void markDone(int taskId) {
-        Task task = taskDAO.getById(taskId);
+        Task task = taskRepository.findOne((long) taskId);
         task.setDone(true);
     }
 
     @Override
     public void markUndone(int taskId) {
-        Task task = taskDAO.getById(taskId);
+        Task task = taskRepository.findOne((long) taskId);
         task.setDone(false);
     }
 }

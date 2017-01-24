@@ -38,7 +38,7 @@ public class TaskFactoryImpl implements TaskFactory {
         task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
         task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
-        task.setUserID(user.getUserId());
+        task.setUser(user);
         if (taskDTO.getIsMainTask() == null) {
             task.setMainTask(false);
         } else if (taskDTO.getIsMainTask().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {

@@ -38,7 +38,7 @@ public class RegisterServiceImpl implements RegisterService {
                     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                     user = userRepository.save(user);
                     UserRole userRole = new UserRole();
-                    userRole.setUserId(user.getUserId());
+                    userRole.setUser(user);
                     userRole.setRole("ROLE_USER");
                     userRoleRepository.save(userRole);
                 } catch (Exception e) {

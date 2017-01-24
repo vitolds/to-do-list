@@ -1,6 +1,7 @@
 package lv.javaguru.java2.service.security;
 
 import lv.javaguru.java2.database.springJPA.UserRepository;
+import lv.javaguru.java2.database.springJPA.UserRoleRepository;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (UserRole role : user.getRoles()){
+        for (UserRole role : userRoleRepository.findByUserId(user.getUserId())){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
 

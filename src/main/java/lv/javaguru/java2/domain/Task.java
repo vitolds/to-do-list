@@ -27,8 +27,8 @@ public class Task {
     @Column(name = "Deadline")
     private Timestamp deadline;
 
-    @Column(name = "UserId", nullable = false)
-    private long userID;
+//    @Column(name = "UserId", nullable = false)
+//    private long userID;
 
     @Column(name = "MainTask")
     @Type(type = "org.hibernate.type.BooleanType")
@@ -41,11 +41,10 @@ public class Task {
     @Type(type = "org.hibernate.type.BooleanType")
     private boolean done;
 
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="UserId", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="UserId")
     public User getUser() {
         return user;
     }
@@ -94,13 +93,13 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(long userID) {
-        this.userID = userID;
-    }
+//    public long getUserID() {
+//        return userID;
+//    }
+//
+//    public void setUserID(long userID) {
+//        this.userID = userID;
+//    }
 
     public boolean isMainTask() {
         return isMainTask;

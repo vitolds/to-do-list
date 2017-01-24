@@ -25,11 +25,6 @@ public class User {
     @Column(name="PassW", nullable = false)
     private String password;
 
-    @Transient
-    private List<UserRole> roles;
-    @Transient
-    private List<Task> tasks;
-
     public User() {
 
     }
@@ -41,24 +36,6 @@ public class User {
         this.username = user.username;
         this.email = user.email;
         this.password = user.password;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="user")
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="user")
-    public List<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
     }
 
     public long getUserId() {
