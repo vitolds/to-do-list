@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Tasks</title>
@@ -39,8 +40,46 @@
             });
         }
 
+        function markDone(taskId) {
+            $.ajax({
+                type : 'POST',
+                url : '/java2/tasks',
+                data: {
+                    cmd: "markDone",
+                    taskId: taskId,
+                },
+                success:function (data) {
+                    location.reload();
+                }
+            });
+        }
+
+        function markUndone(taskId) {
+            $.ajax({
+                type : 'POST',
+                url : '/java2/tasks',
+                data: {
+                    cmd: "markUndone",
+                    taskId: taskId,
+                },
+                success:function (data) {
+                    location.reload();
+                }
+            });
+        }
+
         $(document).ready(function() {
             $('#saveChanges').click(function() {
+                if ($('#isDoneTask').checked) {
+                    var done = "1";
+                } else {
+                    var done = "";
+                }
+                if ($('#isMainTask').checked) {
+                    var main = "1";
+                } else {
+                    var main = "";
+                }
                 $.ajax({
                     type : 'POST',
                     url : '/java2/tasks',
@@ -51,8 +90,8 @@
                         deadlineDate: $('#deadlineDate').val(),
                         deadlineTime: $('#deadlineTime').val(),
                         taskPriority: $('#taskPriority').val(),
-                        isMainTask: $('#isMainTask').val(),
-                        isDoneTask: $('#isDoneTask').val(),
+                        isMainTask: main,
+                        isDoneTask: done,
                     },
                     success:function (data) {
                         $("#alert").html(data);
@@ -96,7 +135,14 @@
                 <c:forEach items="${data}" var="task">
                     <tr id="<c:out value="${task.taskId}"/>" data-toggle="collapse" data-target="#task<c:out value="${task.taskId}"/>">
                         <td>
-                            <a href=""><span class="glyphicon glyphicon-unchecked" aria-hidden="true" style="color:black"></span></a>
+                            <c:choose>
+                                <c:when test="${task.done.equals('1')}">
+                                    <a href="javascript:markUndone(<c:out value="${task.taskId}"/>)"><span class="glyphicon glyphicon-check" aria-hidden="true" style="color:black"></span></a>
+                                </c:when>
+                                <c:when test="${task.done.equals('0')}">
+                                    <a href="javascript:markDone(<c:out value="${task.taskId}"/>)"><span class="glyphicon glyphicon-unchecked" aria-hidden="true" style="color:black"></span></a>
+                                </c:when>
+                            </c:choose>
                             <c:out value="${task.name}"/>
                         </td>
                         <td align="right">

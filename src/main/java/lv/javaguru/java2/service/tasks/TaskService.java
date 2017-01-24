@@ -12,4 +12,8 @@ public interface TaskService {
 
     void update(TaskDTO task, User user);
 
+    void markDone(int taskId);
+
+    void markUndone(int taskId);
+
 }

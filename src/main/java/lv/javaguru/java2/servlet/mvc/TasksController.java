@@ -47,6 +47,18 @@ public class TasksController {
 
     @RequestMapping(value="tasks", method={RequestMethod.POST})
     public ModelAndView processPost(HttpServletRequest req) {
+        String cmd = req.getParameter("cmd");
+        if (cmd != null) {
+            if (cmd.equals("markDone")) {
+                String taskId = req.getParameter("taskId");
+                taskService.markDone(Integer.parseInt(taskId));
+                return new ModelAndView("ajaxPage", "data", "");
+            } else if (cmd.equals("markUndone")) {
+                String taskId = req.getParameter("taskId");
+                taskService.markUndone(Integer.parseInt(taskId));
+                return new ModelAndView("ajaxPage", "data", "");
+            }
+        }
 
         String deadlineDate = req.getParameter("deadlineDate");
         String deadlineTime = req.getParameter("deadlineTime");

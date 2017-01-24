@@ -92,7 +92,7 @@ public class TaskValidatorImpl implements TaskValidator {
 
     @Override
     public void validateIsDone(String isDone) {
-        if (isDone.equals("") || isDone.equals(CHECKBOX_VALUE) ) {
+        if (isDone.equals("") || isDone.equals(CHECKBOX_VALUE)) {
         } else {
             throw new IllegalArgumentException("Task done attribute is not valid");
         }
@@ -101,7 +101,7 @@ public class TaskValidatorImpl implements TaskValidator {
     @Override
     public void validateIsMain(String isMain) {
         if (isMain == null) {
-        } else if (isMain.equals(CHECKBOX_VALUE)) {
+        } else if (isMain.equals(CHECKBOX_VALUE) || isMain.equals("")) {
         } else {
             throw new IllegalArgumentException("Task main attribute is not valid");
         }

@@ -54,10 +54,24 @@ public class TaskServiceImpl implements TaskService {
         task.setPriority(Integer.parseInt(taskDTO.getPriority()));
         if (taskDTO.getDone() == null) {
             task.setDone(false);
+        } else if (taskDTO.getDone().equals("")){
+            task.setDone(false);
         } else if (taskDTO.getDone().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
             task.setDone(true);
         }
 
         taskDAO.update(task);
+    }
+
+    @Override
+    public void markDone(int taskId) {
+        Task task = taskDAO.getById(taskId);
+        task.setDone(true);
+    }
+
+    @Override
+    public void markUndone(int taskId) {
+        Task task = taskDAO.getById(taskId);
+        task.setDone(false);
     }
 }
