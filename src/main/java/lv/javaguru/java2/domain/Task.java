@@ -13,7 +13,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "TaskId", nullable = false)
-    private long taskId;
+    private long id;
 
     @Column(name = "Name", nullable = false)
     private String name;
@@ -54,11 +54,11 @@ public class Task {
     }
 
     public long getTaskId() {
-        return taskId;
+        return id;
     }
 
     public void setTaskId(long taskId) {
-        this.taskId = taskId;
+        this.id = taskId;
     }
 
     public String getName() {
