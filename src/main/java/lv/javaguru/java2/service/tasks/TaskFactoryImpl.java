@@ -2,7 +2,7 @@ package lv.javaguru.java2.service.tasks;
 
 import lv.javaguru.java2.database.TaskDAO;
 import lv.javaguru.java2.domain.Task;
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;

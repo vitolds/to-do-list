@@ -1,11 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import lv.javaguru.java2.domain.Task;
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.tasks.TaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

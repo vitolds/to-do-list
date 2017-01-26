@@ -1,7 +1,7 @@
 package lv.javaguru.java2.service.tasks;
 
 
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;

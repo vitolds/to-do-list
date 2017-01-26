@@ -1,6 +1,6 @@
 package lv.javaguru.java2.service.tasks;
 
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 
 public interface TaskValidator {
 

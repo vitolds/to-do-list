@@ -1,12 +1,12 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import lv.javaguru.java2.domain.Task;
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.tasks.TaskFactory;
 import lv.javaguru.java2.service.tasks.TaskService;
+import lv.javaguru.java2.servlet.dto.TasksDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -37,10 +38,29 @@ public class TasksController {
 
         List<Task> tasks = taskService.getAllTasksByUser(user);
 
-        List<TaskDTO> tasksDTO = new ArrayList<>();
-        for (Task task: tasks) {
-            tasksDTO.add(convertTaskToTaskDTO(task));
+        List<TaskDTO> undoneTasksDTO = new ArrayList<>();
+        List<TaskDTO> doneTasksDTO = new ArrayList<>();
+        TaskDTO taskDTO;
+        boolean noMainTask = true;
+        TasksDTO tasksDTO = new TasksDTO();
+        if (tasks != null) {
+            for (Task task : tasks) {
+                if (task.isDone()) {
+                    doneTasksDTO.add(convertTaskToTaskDTO(task));
+                } else {
+                    taskDTO = convertTaskToTaskDTO(task);
+                    undoneTasksDTO.add(taskDTO);
+                    if (noMainTask && task.isMainTask()) {
+                        tasksDTO.setMainTask(taskDTO);
+                        noMainTask = false;
+                    }
+
+                }
+            }
         }
+
+        tasksDTO.setDoneTasks(doneTasksDTO);
+        tasksDTO.setUndoneTasks(undoneTasksDTO);
 
         return new ModelAndView("tasksPage", "data", tasksDTO);
     }
@@ -49,15 +69,22 @@ public class TasksController {
     public ModelAndView processPost(HttpServletRequest req) {
         String cmd = req.getParameter("cmd");
         if (cmd != null) {
-            if (cmd.equals("markDone")) {
-                String taskId = req.getParameter("taskId");
-                taskService.markDone(Integer.parseInt(taskId));
-                return new ModelAndView("ajaxPage", "data", "");
-            } else if (cmd.equals("markUndone")) {
-                String taskId = req.getParameter("taskId");
-                taskService.markUndone(Integer.parseInt(taskId));
-                return new ModelAndView("ajaxPage", "data", "");
+            String taskId = req.getParameter("taskId");
+            switch (cmd) {
+                case "markDone":
+                    taskService.markDone(Integer.parseInt(taskId));
+                    break;
+                case "markUndone":
+                    taskService.markUndone(Integer.parseInt(taskId));
+                    break;
+                case "markMain":
+                    taskService.markMain(Integer.parseInt(taskId));
+                    break;
+                case "markNotMain":
+                    taskService.markNotMain(Integer.parseInt(taskId));
+                    break;
             }
+            return new ModelAndView("ajaxPage", "data", "");
         }
 
         String deadlineDate = req.getParameter("deadlineDate");
