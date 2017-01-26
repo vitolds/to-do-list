@@ -31,12 +31,6 @@
                 $("#taskText").val(task.text);
                 $("#deadlineDate").val(task.deadlineDate);
                 $("#deadlineTime").val(task.deadlineTime);
-                if (task.isMainTask == 1) {
-                    $("#isMainTask").prop("checked", true);
-                }
-                if (task.done == 1) {
-                    $("#isDoneTask").prop("checked", true);
-                }
                 $("#taskPriority").val(task.priority);
                 $("#taskId").val(taskId);
                 $("#taskModal").modal('show');
@@ -50,12 +44,6 @@
                         $("#taskText").val(task.text);
                         $("#deadlineDate").val(task.deadlineDate);
                         $("#deadlineTime").val(task.deadlineTime);
-                        if (task.isMainTask == 1) {
-                            $("#isMainTask").prop("checked", true);
-                        }
-                        if (task.done == 1) {
-                            $("#isDoneTask").prop("checked", true);
-                        }
                         $("#taskPriority").val(task.priority);
                         $("#taskId").val(taskId);
                         $("#taskModal").modal('show');
@@ -126,16 +114,6 @@
             $('#doneTasksTable').toggle(1);
         });
         $('#saveChanges').click(function () {
-            if ($('#isDoneTask').checked) {
-                var done = "1";
-            } else {
-                var done = "";
-            }
-            if ($('#isMainTask').checked) {
-                var main = "1";
-            } else {
-                var main = "";
-            }
             $.ajax({
                 type: 'POST',
                 url: '/java2/tasks',
@@ -146,8 +124,6 @@
                     deadlineDate: $('#deadlineDate').val(),
                     deadlineTime: $('#deadlineTime').val(),
                     taskPriority: $('#taskPriority').val(),
-                    isMainTask: main,
-                    isDoneTask: done,
                 },
                 success: function (data) {
                     $("#alert").html(data);
@@ -335,14 +311,6 @@
                                 <option value="2">2 priority</option>
                                 <option value="3">3 priority</option>
                             </select>
-                        </div>
-
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="isMainTask" name="isMainTask" value="1"> Main task</label>
-                        </div>
-
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="isDoneTask" name="isDoneTask" value="1"> Done</label>
                         </div>
 
                         <input type="hidden" id="taskId" value="">

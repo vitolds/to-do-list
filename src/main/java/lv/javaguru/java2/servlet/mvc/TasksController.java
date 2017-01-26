@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -106,9 +105,9 @@ public class TasksController {
                 deadlineDate,
                 deadlineTime,
                 deadline,
-                req.getParameter("isMainTask"),
+                "",
                 req.getParameter("taskPriority"),
-                req.getParameter("isDoneTask"));
+                "");
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
@@ -122,8 +121,7 @@ public class TasksController {
         }
 
         return new ModelAndView("ajaxPage", "data",
-                "<div class=\"alert alert-success\" role=\"alert\">" + "Task created" + "</div>");
-
+                "<div class=\"alert alert-success\" role=\"alert\">" + "Task updated" + "</div>");
     }
 
     private TaskDTO convertTaskToTaskDTO(Task task) {

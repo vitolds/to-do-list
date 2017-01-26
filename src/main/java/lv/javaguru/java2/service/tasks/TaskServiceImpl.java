@@ -46,19 +46,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
         task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
         task.setUserID(user.getUserId());
-        if (taskDTO.getIsMainTask() == null) {
-            task.setMainTask(false);
-        } else if (taskDTO.getIsMainTask().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
-            task.setMainTask(true);
-        }
         task.setPriority(Integer.parseInt(taskDTO.getPriority()));
-        if (taskDTO.getDone() == null) {
-            task.setDone(false);
-        } else if (taskDTO.getDone().equals("")){
-            task.setDone(false);
-        } else if (taskDTO.getDone().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
-            task.setDone(true);
-        }
 
         taskDAO.update(task);
     }
