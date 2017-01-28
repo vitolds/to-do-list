@@ -45,6 +45,6 @@ public class RegisterServiceImpl implements RegisterService {
                     return new ValidatorMessage(false, "?error");
                 }
         }
-        return new ValidatorMessage(true, null);
+        return new ValidatorMessage(true, "?success");
     }
 }
