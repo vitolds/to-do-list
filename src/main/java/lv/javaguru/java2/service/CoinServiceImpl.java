@@ -2,7 +2,6 @@ package lv.javaguru.java2.service;
 
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +20,7 @@ public class CoinServiceImpl implements CoinService{
     public void addCoinsToUser(Task task) {
         float coins = calculateCoins(task);
         User user = task.getUser();
+        task.setCoins(coins);
         user.setCoins(user.getCoins() + coins);
     }
 
@@ -29,6 +29,7 @@ public class CoinServiceImpl implements CoinService{
         User user = task.getUser();
         float userCoins = user.getCoins();
         float taskCoins = task.getCoins();
+        task.setCoins(0);
         user.setCoins(userCoins - taskCoins);
     }
 
