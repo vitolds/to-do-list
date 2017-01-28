@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   MainTask BOOLEAN DEFAULT FALSE,
   Priority TINYINT DEFAULT 0,
   Done BOOLEAN DEFAULT FALSE,
+  Coins FLOAT(9, 2) DEFAULT 0,
 
   PRIMARY KEY (TaskID),
   CONSTRAINT User_FK
@@ -58,31 +59,31 @@ AUTO_INCREMENT = 1;
 -- -----------------------------------------------------
 -- Table `parent`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `parent` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(60) NOT NULL,
-  `color` VARCHAR(45) NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB;
+-- CREATE TABLE IF NOT EXISTS `parent` (
+--   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--   `name` VARCHAR(60) NOT NULL,
+--   `color` VARCHAR(45) NULL DEFAULT 0,
+--   PRIMARY KEY (`id`),
+--   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+-- ENGINE = InnoDB;
 -- Parent table end --
 
 -- -----------------------------------------------------
 -- Table `ToDoList_child`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ToDoList_child` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(60) NOT NULL,
-  `Todo id` INT UNSIGNED NOT NULL,
-  `color` VARCHAR(45) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
-  CONSTRAINT `Todo id`
-    FOREIGN KEY (`id`)
-    REFERENCES `parent` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+-- CREATE TABLE IF NOT EXISTS `ToDoList_child` (
+--   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--   `name` VARCHAR(60) NOT NULL,
+--   `Todo id` INT UNSIGNED NOT NULL,
+--   `color` VARCHAR(45) NOT NULL DEFAULT 0,
+--   PRIMARY KEY (`id`),
+--   UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+--   CONSTRAINT `Todo id`
+--     FOREIGN KEY (`id`)
+--     REFERENCES `parent` (`id`)
+--     ON DELETE NO ACTION
+--     ON UPDATE NO ACTION)
+-- ENGINE = InnoDB;
 -- Child table end --
 
 

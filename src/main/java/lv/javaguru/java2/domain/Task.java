@@ -39,6 +39,9 @@ public class Task {
     @Type(type = "org.hibernate.type.BooleanType")
     private boolean done;
 
+    @Column(name = "Coins")
+    private float coins;
+
     public int getTaskId() {
         return taskId;
     }
@@ -111,4 +114,11 @@ public class Task {
         this.done = done;
     }
 
+    public float getCoins() {
+        return coins;
+    }
+
+    public void setCoins(float coins) {
+        this.coins = coins;
+    }
 }

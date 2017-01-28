@@ -2,6 +2,7 @@ package lv.javaguru.java2.service.tasks;
 
 import lv.javaguru.java2.database.TaskDAO;
 import lv.javaguru.java2.domain.Task;
+import lv.javaguru.java2.service.CoinService;
 import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.Utils;
@@ -21,6 +22,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     TaskValidator taskValidator;
+
+    @Autowired
+    CoinService coinService;
 
     private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
 
@@ -55,12 +59,14 @@ public class TaskServiceImpl implements TaskService {
     public void markDone(int taskId) {
         Task task = taskDAO.getById(taskId);
         task.setDone(true);
+        coinService.addCoinsToUser(task);
     }
 
     @Override
     public void markUndone(int taskId) {
         Task task = taskDAO.getById(taskId);
         task.setDone(false);
+        coinService.removeCoinsFromUser(task);
     }
 
     @Override
