@@ -1,6 +1,9 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.service.security.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +19,16 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ProfileController {
 
-    @RequestMapping(value="profile", method={RequestMethod.GET})
+    @Autowired
+    private SecurityService securityService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @RequestMapping(value={"profile", "/"}, method={RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented
-        User user = (User) session.getAttribute("user");
+
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
         return new ModelAndView("profilePage", "data", user);
     }

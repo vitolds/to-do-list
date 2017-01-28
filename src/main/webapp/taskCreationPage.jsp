@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Task creation</title>
-    <link rel="stylesheet" href="css/css.css">
+    <link rel="stylesheet" href="/java2/css/css.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -34,6 +34,7 @@
 
         <form method="post" style="width: 75%;padding: 15px;margin: 0 auto;background-color: #fff;
         border-radius: 0.3em;">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h2 align="center"><b>Task creation</b></h2><br>
             <%= request.getAttribute("data")%>
 

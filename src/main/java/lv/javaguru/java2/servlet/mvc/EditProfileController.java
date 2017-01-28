@@ -1,7 +1,9 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.service.security.RegisterService;
+import lv.javaguru.java2.service.EditUserService;
+import lv.javaguru.java2.service.security.SecurityService;
 import lv.javaguru.java2.service.security.validator.ValidatorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,20 +14,30 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Vitolds on 12/17/2016.
+ * Created by vitol on 28/01/2017.
  */
+
 @Controller
-public class RegisterController {
+public class EditProfileController {
 
     @Autowired
-    private RegisterService registerService;
+    UserRepository userRepository;
 
-    @RequestMapping(value="register", method={RequestMethod.GET})
+    @Autowired
+    SecurityService securityService;
+
+    @Autowired
+    EditUserService editUserService;
+
+    @RequestMapping(value = "profile/edit", method = RequestMethod.GET)
     public ModelAndView processGet() {
-        return new ModelAndView("register", "data", null);
+
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
+
+        return new ModelAndView("profile_edit", "data", user);
     }
 
-    @RequestMapping(value="register", method={RequestMethod.POST})
+    @RequestMapping(value = "profile/edit", method = RequestMethod.POST)
     public ModelAndView processPost(HttpServletRequest req) {
 
         User user = new User();
@@ -35,8 +47,8 @@ public class RegisterController {
         user.setLastName(req.getParameter("lastName"));
         user.setPassword(req.getParameter("password"));
 
-        ValidatorMessage validatorMessage = registerService.registerUser(user);
+        ValidatorMessage validatorMessage = editUserService.updateUser(user);
 
-        return new ModelAndView("redirect", "data", "/java2/register" + validatorMessage.getMessage());
+        return new ModelAndView("redirect", "data", "/java2/profile" + validatorMessage.getMessage());
     }
 }

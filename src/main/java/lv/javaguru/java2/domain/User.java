@@ -1,21 +1,23 @@
 package lv.javaguru.java2.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="UserId")
+    private long id;
     @Column(name="FirstName")
     private String firstName;
     @Column(name="LastName")
     private String lastName;
     @Column(name="UserName", nullable = false)
-    private String userName;
+    private String username;
     @Column(name="Email", nullable = false)
     private String email;
     @Column(name="Coins")
@@ -23,12 +25,25 @@ public class User {
     @Column(name="PassW", nullable = false)
     private String password;
 
-    public int getUserId() {
-        return userId;
+    public User() {
+
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User(User user) {
+        this.id = user.id;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.username = user.username;
+        this.email = user.email;
+        this.password = user.password;
+    }
+
+    public long getUserId() {
+        return id;
+    }
+
+    public void setUserId(long userId) {
+        this.id = userId;
     }
 
     public String getFirstName() {
@@ -47,9 +62,9 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUserName() { return userName; }
+    public String getUsername() { return username; }
 
-    public void setUserName(String userName) { this.userName = userName; }
+    public void setUsername(String userName) { this.username = userName; }
 
     public String getEmail() { return email; }
 

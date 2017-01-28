@@ -1,8 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.service.security.SecurityService;
 import lv.javaguru.java2.service.tasks.TaskFactory;
 import lv.javaguru.java2.service.tasks.TaskService;
 import lv.javaguru.java2.servlet.dto.TasksDTO;
@@ -27,13 +29,16 @@ public class TasksController {
     @Autowired
     TaskFactory taskFactory;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    SecurityService securityService;
+
     @RequestMapping(value="tasks", method={RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
 
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented//Remove when security implemented
-
-        User user = (User) session.getAttribute("user");
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
         List<Task> tasks = taskService.getAllTasksByUser(user);
 
@@ -109,8 +114,7 @@ public class TasksController {
                 req.getParameter("taskPriority"),
                 "");
 
-        HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
         try {
             taskService.update(taskDTO, user);
