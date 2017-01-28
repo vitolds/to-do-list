@@ -25,7 +25,7 @@ public class ProfileController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value="profile", method={RequestMethod.GET})
+    @RequestMapping(value={"profile", "/"}, method={RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
 
         User user = userRepository.findByUsername(securityService.findLoggedInUsername());
