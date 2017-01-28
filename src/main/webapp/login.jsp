@@ -10,10 +10,11 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/java2/css/css.css">
+    <link rel="stylesheet" href="/java2/css/login_register.css">
 </head>
 <body>
     <div class="main-container">
+        <h3>TODO<span class="glyphicon glyphicon-book"></span>List</h3>
         <form action="/java2/login" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="form-group">

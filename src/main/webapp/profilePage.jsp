@@ -37,7 +37,7 @@
             %>
             <div class="profile-info">
                 <nobr>
-                    <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="#"></a></h4>
+                    <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="/java2/profile/edit"></a></h4>
                 </nobr>
                 <h5><span class="label label-info">Coins <%= user.getCoins()%></span></h5>
             </div>

@@ -31,7 +31,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Transactional
     public ValidatorMessage registerUser(User user) {
 
-        ValidatorMessage validatorMessage = userValidator.validateUser(user);
+        ValidatorMessage validatorMessage = userValidator.validateUser(user, UserValidator.Type.REGISTER);
         if (!validatorMessage.isSuccess()) return validatorMessage;
             else {
                 try {

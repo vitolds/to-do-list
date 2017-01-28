@@ -18,24 +18,24 @@ public class UserValidatorImpl implements UserValidator {
     private int emailLength = 255;
 
     @Override
-    public ValidatorMessage validateUsername(String username) {
+    public ValidatorMessage validateUsername(String username, Type type) {
 
         if (username.length() > usernameLength)  {
             return new ValidatorMessage(false, "?username");
         }
-        if (userRepository.findByUsername(username)!=null) {
+        if (type == Type.REGISTER && userRepository.findByUsername(username)!=null) {
             return new ValidatorMessage(false, "?username");
         }
         return new ValidatorMessage(true);
     }
 
     @Override
-    public ValidatorMessage validateEmail(String email) {
+    public ValidatorMessage validateEmail(String email, Type type) {
 
         if (email.length() > emailLength) {
             return new ValidatorMessage(false, "?email");
         }
-        if (userRepository.findByEmail(email)!=null) {
+        if (type == Type.REGISTER && userRepository.findByEmail(email)!=null) {
             return new ValidatorMessage(false, "?email");
         }
         if (!valEmailSynt(email)) {
@@ -54,22 +54,22 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     @Override
-    public ValidatorMessage validateUser(User user) {
+    public ValidatorMessage validateUser(User user, Type type) {
         ValidatorMessage validatorMessage;
 
         // Username validation
-        validatorMessage = validateUsername(user.getUsername());
+        validatorMessage = validateUsername(user.getUsername(), type);
         if (!validatorMessage.isSuccess()) return validatorMessage;
 
         // Email validation
-        validatorMessage = validateEmail(user.getEmail());
+        validatorMessage = validateEmail(user.getEmail(), type);
         if (!validatorMessage.isSuccess()) return validatorMessage;
 
         // Password validation
         validatorMessage = validatePassword(user.getPassword());
         if (!validatorMessage.isSuccess()) return validatorMessage;
 
-        return new ValidatorMessage(true);
+        return new ValidatorMessage(true, "?success");
     }
 
     private boolean valEmailSynt(String email) {

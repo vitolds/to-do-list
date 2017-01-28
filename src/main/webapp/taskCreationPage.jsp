@@ -34,6 +34,7 @@
 
         <form method="post" style="width: 75%;padding: 15px;margin: 0 auto;background-color: #fff;
         border-radius: 0.3em;">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h2 align="center"><b>Task creation</b></h2><br>
             <%= request.getAttribute("data")%>
 
