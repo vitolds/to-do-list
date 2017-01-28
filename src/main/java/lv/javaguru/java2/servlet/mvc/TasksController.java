@@ -76,6 +76,7 @@ public class TasksController {
             String taskId = req.getParameter("taskId");
             switch (cmd) {
                 case "markDone":
+                    System.out.println("mark done");
                     taskService.markDone(Integer.parseInt(taskId));
                     break;
                 case "markUndone":

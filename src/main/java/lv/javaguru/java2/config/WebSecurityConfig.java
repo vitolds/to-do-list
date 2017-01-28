@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable(); //ajax don't work if enabled
         httpSecurity
                 .authorizeRequests()
                     .antMatchers("/register", "/css/**").permitAll()

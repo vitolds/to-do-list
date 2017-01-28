@@ -72,13 +72,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void markMain(int taskId) {
-        Task task = taskDAO.getById(taskId);
+        Task task = taskRepository.findOne((long) taskId);
         task.setMainTask(true);
     }
 
     @Override
     public void markNotMain(int taskId) {
-        Task task = taskDAO.getById(taskId);
+        Task task = taskRepository.findOne((long) taskId);
         task.setMainTask(false);
     }
 }

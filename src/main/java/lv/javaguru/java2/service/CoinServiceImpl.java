@@ -1,7 +1,5 @@
 package lv.javaguru.java2.service;
 
-import lv.javaguru.java2.database.TaskDAO;
-import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import java.sql.Timestamp;
 @Component
 @Transactional
 public class CoinServiceImpl implements CoinService{
-    @Autowired
-    UserDAO userDAO;
 
     private final float FIRST_PRIORITY_COINS = 1;
     private final float SECOND_PRIORITY_COINS = 2;
@@ -24,13 +20,13 @@ public class CoinServiceImpl implements CoinService{
     @Override
     public void addCoinsToUser(Task task) {
         float coins = calculateCoins(task);
-        User user = userDAO.getById(task.getUserID());
+        User user = task.getUser();
         user.setCoins(user.getCoins() + coins);
     }
 
     @Override
     public void removeCoinsFromUser(Task task) {
-        User user = userDAO.getById(task.getUserID());
+        User user = task.getUser();
         float userCoins = user.getCoins();
         float taskCoins = task.getCoins();
         user.setCoins(userCoins - taskCoins);
