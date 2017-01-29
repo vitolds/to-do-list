@@ -29,7 +29,7 @@ public class TaskCreationController{
 
     @RequestMapping(value="create_task", method = {RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
-        return new ModelAndView("taskCreationPage", "model", null);
+        return new ModelAndView("taskCreationPage", "data", "");
     }
 
     @RequestMapping(value="create_task", method={RequestMethod.POST})
