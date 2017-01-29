@@ -1,4 +1,5 @@
-<%@ page import="lv.javaguru.java2.domain.User" %><%--
+<%@ page import="lv.javaguru.java2.domain.User" %>
+<%@ page import="lv.javaguru.java2.servlet.dto.UserDTO" %><%--
 Created by IntelliJ IDEA.
 User: Vitolds
 Date: 12/18/2016
@@ -32,7 +33,7 @@ To change this template use File | Settings | File Templates.
             </div>
         </nav>
             <%
-                User user = (User) request.getAttribute("data");
+                UserDTO user = (UserDTO) request.getAttribute("data");
             %>
             <div class="profile-info" style="width: 30%; margin: 0 auto">
                 <form action="/java2/profile/edit" method="post">
@@ -55,6 +56,10 @@ To change this template use File | Settings | File Templates.
                     <div>
                         <label>Last Name: <%= user.getLastName()%></label>
                         <input type="text" class="form-control" placeholder="Last Name" name="lastname">
+                    </div>
+                    <div>
+                        <label>Visible: <%= user.isVisible()%></label>
+                        <input type="checkbox" class="form-control" name="visible" value="true">
                     </div>
                     <button type="submit" class="btn btn-default">Update</button>
                 </form>

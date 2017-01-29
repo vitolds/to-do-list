@@ -1,4 +1,5 @@
-<%@ page import="lv.javaguru.java2.domain.User" %><%--
+<%@ page import="lv.javaguru.java2.domain.User" %>
+<%@ page import="lv.javaguru.java2.servlet.dto.UserDTO" %><%--
   Created by IntelliJ IDEA.
   User: Vitolds
   Date: 12/18/2016
@@ -33,13 +34,23 @@
         </nav>
         <div class="info-container">
             <%
-                User user = (User) request.getAttribute("data");
+                UserDTO user = (UserDTO) request.getAttribute("data");
             %>
             <div class="profile-info">
                 <nobr>
                     <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="/java2/profile/edit"></a></h4>
                 </nobr>
                 <h5><span class="label label-info">Coins <%= user.getCoins()%></span></h5>
+            </div>
+            <div class="main-task" align="center">
+                <% if (user.getTask()==null) { %>
+                <div>No main task</div>
+
+                <% } else { %>
+                <% if (user.getTask().getName()!=null) { %><div> <%= user.getTask().getName()%> </div><% } %>
+                <% if (user.getTask().getText()!=null) { %><div> <%= user.getTask().getText()%> </div><% } %>
+                <% if (user.getTask().getDeadline()!=null) { %><div> <%= user.getTask().getDeadline()%> </div><% } %>
+                <% } %>
             </div>
         </div>
     </div>

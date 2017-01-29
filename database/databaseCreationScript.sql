@@ -17,6 +17,7 @@ create table if not exists users (
   PassW varchar(255) not null,
   Email varchar(255) not null unique,
   Coins float(9, 2) default 0,
+  Visible BOOLEAN DEFAULT FALSE,
   primary key (UserId)
 )
 ENGINE = InnoDB

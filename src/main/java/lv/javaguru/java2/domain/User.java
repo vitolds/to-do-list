@@ -25,6 +25,8 @@ public class User {
     @Column(name="PassW", nullable = false)
     private String password;
 
+    @Column(name="Visible")
+    private boolean isVisible;
     public User() {
 
     }
@@ -77,4 +79,12 @@ public class User {
     public void setPassword(String password) { this.password = password;}
 
     public String getPassword() {return this.password;}
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 }

@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends CrudRepository<Task, Long> {
     List<Task> findByUserId(long userId);
+    List<Task> findByUserIdAndIsMainTaskAndDone(long userId, boolean isMainTask, boolean done);
 }

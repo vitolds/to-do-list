@@ -2,7 +2,9 @@ package lv.javaguru.java2.servlet.mvc;
 
 import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.service.UserDTOService;
 import lv.javaguru.java2.service.security.SecurityService;
+import lv.javaguru.java2.servlet.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,16 @@ public class ProfileController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserDTOService userDTOService;
+
     @RequestMapping(value={"profile", "/"}, method={RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
 
         User user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
-        return new ModelAndView("profilePage", "data", user);
+        UserDTO userDTO = userDTOService.getUserDTO(user);
+
+        return new ModelAndView("profilePage", "data", userDTO);
     }
 }

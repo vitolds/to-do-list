@@ -3,8 +3,10 @@ package lv.javaguru.java2.servlet.mvc;
 import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.EditUserService;
+import lv.javaguru.java2.service.UserDTOService;
 import lv.javaguru.java2.service.security.SecurityService;
 import lv.javaguru.java2.service.security.validator.ValidatorMessage;
+import lv.javaguru.java2.servlet.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +31,16 @@ public class EditProfileController {
     @Autowired
     EditUserService editUserService;
 
+    @Autowired
+    UserDTOService userDTOService;
+
     @RequestMapping(value = "profile/edit", method = RequestMethod.GET)
     public ModelAndView processGet() {
 
         User user = userRepository.findByUsername(securityService.findLoggedInUsername());
+        UserDTO userDTO = userDTOService.getUserDTO(user);
 
-        return new ModelAndView("profile_edit", "data", user);
+        return new ModelAndView("profile_edit", "data", userDTO);
     }
 
     @RequestMapping(value = "profile/edit", method = RequestMethod.POST)
@@ -46,6 +52,8 @@ public class EditProfileController {
         user.setFirstName(req.getParameter("firstName"));
         user.setLastName(req.getParameter("lastName"));
         user.setPassword(req.getParameter("password"));
+        if (req.getParameter("visible").equals("true")) user.setVisible(true);
+            else user.setVisible(false);
 
         ValidatorMessage validatorMessage = editUserService.updateUser(user);
 
