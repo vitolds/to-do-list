@@ -24,6 +24,6 @@ public class LogoutController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
 
-        return new ModelAndView("redirect", "data", "login");
+        return new ModelAndView("redirect", "data", "login?logout");
     }
 }

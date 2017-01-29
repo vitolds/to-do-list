@@ -49,6 +49,7 @@ public class EditProfileController {
 
         ValidatorMessage validatorMessage = editUserService.updateUser(user);
 
-        return new ModelAndView("redirect", "data", "/java2/profile" + validatorMessage.getMessage());
+        if (!validatorMessage.isSuccess()) return new ModelAndView("redirect", "data", "/java2/profile/edit"  + validatorMessage.getMessage());
+            else return new ModelAndView("redirect", "data", "/java2/logout");
     }
 }

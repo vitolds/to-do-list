@@ -33,12 +33,15 @@ public class UserValidatorImpl implements UserValidator {
     public ValidatorMessage validateEmail(String email, Type type) {
 
         if (email.length() > emailLength) {
+            System.out.println("Email length");
             return new ValidatorMessage(false, "?email");
         }
         if (type == Type.REGISTER && userRepository.findByEmail(email)!=null) {
+            System.out.println("Email exists");
             return new ValidatorMessage(false, "?email");
         }
         if (!valEmailSynt(email)) {
+            System.out.println("Email synt: " + email);
             return new ValidatorMessage(false, "?email");
         }
         return new ValidatorMessage(true);
