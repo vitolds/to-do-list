@@ -1,9 +1,11 @@
 package lv.javaguru.java2.service.tasks;
 
 
+import lv.javaguru.java2.service.Utils;
 import lv.javaguru.java2.servlet.dto.TaskDTO;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -73,6 +75,12 @@ public class TaskValidatorImpl implements TaskValidator {
         }
         catch(ParseException e)
         {
+            throw new IllegalArgumentException("Task deadline is not valid");
+        }
+
+        Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
+        Timestamp timestampDeadline = Utils.convertStringToTimestamp(deadline, TaskFactoryImpl.DATETIME_STRING_FORMAT);
+        if (timestampNow.after(timestampDeadline)) {
             throw new IllegalArgumentException("Task deadline is not valid");
         }
 

@@ -41,7 +41,7 @@ public class TaskCreationController{
         if (deadlineDate.isEmpty() && deadlineTime.isEmpty()) {
             deadline = "";
         } else if(deadlineTime.isEmpty()) {
-            deadline = deadlineDate + " 00:00";
+            deadline = deadlineDate + " 23:59";
         } else {
             deadline = deadlineDate + " " + deadlineTime;
         }
