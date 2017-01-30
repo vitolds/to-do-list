@@ -36,21 +36,27 @@
             <%
                 UserDTO user = (UserDTO) request.getAttribute("data");
             %>
-            <div class="profile-info">
-                <nobr>
-                    <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="/java2/profile/edit"></a></h4>
-                </nobr>
-                <h5><span class="label label-info">Coins <%= user.getCoins()%></span></h5>
-            </div>
-            <div class="main-task" align="center">
-                <% if (user.getTask()==null) { %>
-                <div>No main task</div>
+            <div style="float:top; display: inline-block; width:100%">
+                <div class="profile-info">
+                    <nobr>
+                        <h4>Hello <%= user.getUsername()%>! <a class="glyphicon glyphicon-cog" href="/java2/profile/edit"></a></h4>
+                    </nobr>
+                    <h5><b>Coins <%= user.getCoins()%></b></h5>
+                </div>
+                <div class="main-task" align="right">
+                    <% if (user.getTask()==null) { %>
+                    <div>No main task</div>
 
-                <% } else { %>
-                <% if (user.getTask().getName()!=null) { %><div> <%= user.getTask().getName()%> </div><% } %>
-                <% if (user.getTask().getText()!=null) { %><div> <%= user.getTask().getText()%> </div><% } %>
-                <% if (user.getTask().getDeadline()!=null) { %><div> <%= user.getTask().getDeadline()%> </div><% } %>
-                <% } %>
+                    <% } else { %>
+                    <h4 style="margin: 0 auto; color:orangered">Main task</h4>
+                    <% if (user.getTask().getName()!=null) { %><h3 style="margin: 0 auto"> <%= user.getTask().getName()%> <% if (user.getTask().getText()!=null) { %><small> <%= user.getTask().getText()%> </small><% } %> </h3><% } %>
+                    <% if (user.getTask().getDeadline()!=null) { %><div>Deadline: <b><%= user.getTask().getDeadline()%> </b></div><% } %>
+                    <% } %>
+                </div>
+            </div>
+            <div style="float:top; display: block">
+                <h5>Current task slots: (slots here)</h5>
+                <button class="btn btn-default">Buy task slot (price here)</button>
             </div>
         </div>
     </div>
