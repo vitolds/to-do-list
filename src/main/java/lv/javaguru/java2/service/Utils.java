@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 
 public class Utils {
 
+    static final Timestamp NULL_TIMESTAMP = Timestamp.valueOf("2038-01-01 00:00:00.0");
+
     public static Timestamp convertStringToTimestamp(String stringToConvert,
                                                      String formatString) {
 
@@ -18,7 +20,7 @@ public class Utils {
             Timestamp timestamp = new Timestamp(date.getTime());
             return timestamp;
         } catch (ParseException e) {
-            return null;
+            return NULL_TIMESTAMP;
         }
     }
 }

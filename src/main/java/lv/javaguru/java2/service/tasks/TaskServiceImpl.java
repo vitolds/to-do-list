@@ -32,7 +32,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasksByUser(User user) {
 
-        List<Task> tasks = taskRepository.findByUserId(user.getUserId());
+        List<Task> tasks = taskRepository.findByUserIdOrderByPriorityDescDeadlineAsc(user.getUserId());
         return tasks;
     }
 

@@ -191,8 +191,20 @@
 
         <table class="table table-condensed table-hover table-active" style="border-collapse:collapse;">
             <c:forEach items="${data.undoneTasks}" var="task">
-                <tr id="<c:out value="${task.taskId}"/>" data-toggle="collapse"
-                    data-target="#task<c:out value="${task.taskId}"/>">
+                <c:choose>
+                    <c:when test="${task.priority.equals('1')}">
+                        <tr id="<c:out value="${task.taskId}"/>" data-toggle="collapse"
+                        data-target="#task<c:out value="${task.taskId}"/>">
+                    </c:when>
+                    <c:when test="${task.priority.equals('2')}">
+                        <tr id="<c:out value="${task.taskId}"/>" data-toggle="collapse"
+                        data-target="#task<c:out value="${task.taskId}"/>" style="color: #f0ad4e;">
+                    </c:when>
+                    <c:when test="${task.priority.equals('3')}">
+                        <tr id="<c:out value="${task.taskId}"/>" data-toggle="collapse"
+                        data-target="#task<c:out value="${task.taskId}"/>" style="color: #a94442;font-weight: bold;">
+                    </c:when>
+                </c:choose>
                     <td>
                         <a href="javascript:markDone(<c:out value="${task.taskId}"/>)"><span
                                 class="glyphicon glyphicon-unchecked" aria-hidden="true" style="color:black"></span></a>
@@ -310,9 +322,9 @@
                             <label>Task priority:</label>
                             <select id="taskPriority" class="form-control" name="taskPriority"
                                     style="max-width: 110px;">
-                                <option value="1">1 priority</option>
-                                <option value="2">2 priority</option>
-                                <option value="3">3 priority</option>
+                                <option value="1">Normal</option>
+                                <option value="2" style="color: #f0ad4e;">Important</option>
+                                <option value="3" style="color: #a94442;font-weight: bold;">Very important</option>
                             </select>
                         </div>
 
