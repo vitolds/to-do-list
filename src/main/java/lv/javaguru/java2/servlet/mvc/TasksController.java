@@ -2,6 +2,7 @@ package lv.javaguru.java2.servlet.mvc;
 
 import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
+import lv.javaguru.java2.service.TaskDTOService;
 import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.security.SecurityService;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +35,9 @@ public class TasksController {
     @Autowired
     SecurityService securityService;
 
+    @Autowired
+    TaskDTOService taskDTOService;
+
     @RequestMapping(value="tasks", method={RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
 
@@ -50,9 +53,9 @@ public class TasksController {
         if (tasks != null) {
             for (Task task : tasks) {
                 if (task.isDone()) {
-                    doneTasksDTO.add(convertTaskToTaskDTO(task));
+                    doneTasksDTO.add(taskDTOService.getTaskDTO(task));
                 } else {
-                    taskDTO = convertTaskToTaskDTO(task);
+                    taskDTO = taskDTOService.getTaskDTO(task);
                     undoneTasksDTO.add(taskDTO);
                     if (noMainTask && task.isMainTask()) {
                         tasksDTO.setMainTask(taskDTO);
@@ -127,36 +130,5 @@ public class TasksController {
 
         return new ModelAndView("ajaxPage", "data",
                 "<div class=\"alert alert-success\" role=\"alert\">" + "Task updated" + "</div>");
-    }
-
-    private TaskDTO convertTaskToTaskDTO(Task task) {
-        String strCreationDate = new SimpleDateFormat("dd.MM.yyyy").format(task.getCreationDateTime());
-        String deadline;
-        String deadlineDate;
-        String deadlineTime;
-        try {
-            deadline = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(task.getDeadline());
-            deadlineDate = new SimpleDateFormat("dd.MM.yyyy").format(task.getDeadline());
-            deadlineTime = new SimpleDateFormat("HH:mm").format(task.getDeadline());
-            if (deadlineTime.equals("00:00")) {
-                deadlineTime = "";
-            }
-        } catch(NullPointerException e) {
-            deadlineDate = null;
-            deadlineTime = null;
-            deadline = null;
-        }
-        TaskDTO taskDTO = new TaskDTO(
-                String.valueOf(task.getTaskId()),
-                task.getName(),
-                task.getText(),
-                strCreationDate,
-                deadlineDate,
-                deadlineTime,
-                deadline,
-                task.isMainTask() ? "1" : "0",
-                String.valueOf(task.getPriority()),
-                task.isDone() ? "1" : "0");
-        return taskDTO;
     }
 }

@@ -74,10 +74,10 @@
 
             <div class="form-group">
                 <label>Task priority:</label>
-                <select class="form-control" name="taskPriority" style="max-width: 110px;">
-                    <option value="1">1 priority</option>
-                    <option value="2">2 priority</option>
-                    <option value="3">3 priority</option>
+                <select class="form-control" name="taskPriority" style="max-width: 140px;">
+                    <option value="1">Normal</option>
+                    <option value="2" style="color: #f0ad4e;">Important</option>
+                    <option value="3" style="color: #a94442;font-weight: bold;">Very important</option>
                 </select>
             </div>
 
