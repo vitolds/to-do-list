@@ -52,7 +52,7 @@ public class EditProfileController {
         user.setFirstName(req.getParameter("firstName"));
         user.setLastName(req.getParameter("lastName"));
         user.setPassword(req.getParameter("password"));
-        if (req.getParameter("visible").equals("true")) user.setVisible(true);
+        if ("true".equals(req.getParameter("visible"))) user.setVisible(true);
             else user.setVisible(false);
 
         ValidatorMessage validatorMessage = editUserService.updateUser(user);
