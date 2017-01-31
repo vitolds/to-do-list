@@ -20,6 +20,9 @@ public class UserDTOServiceImpl implements UserDTOService {
     @Autowired
     TaskRepository taskRepository;
 
+    @Autowired
+    TaskDTOService taskDTOService;
+
     @Override
     public UserDTO getUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
@@ -45,7 +48,7 @@ public class UserDTOServiceImpl implements UserDTOService {
         }
         if (task != null) {
 
-            userDTO.setTask(task);
+            userDTO.setTask(taskDTOService.getTaskDTO(task));
         }
         return userDTO;
     }

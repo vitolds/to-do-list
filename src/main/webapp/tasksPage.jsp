@@ -159,8 +159,8 @@
                 <li><a class="glyphicon glyphicon-user" href="/java2/profile"></a></li>
                 <li><a href="/java2/create_task">Create task</a></li>
                 <li class="active"><a href="/java2/tasks">Tasks</a></li>
-                <li><a href="#">?</a></li>
-                <li><a href="#">?</a></li>
+                <%--<li><a href="#">?</a></li>--%>
+                <%--<li><a href="#">?</a></li>--%>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/java2/logout">Logout</a></li>
@@ -174,7 +174,16 @@
                 <div class="panel-heading">
                     <h3 class="panel-title" align="center">
                         <a data-toggle="collapse" href="#mainTaskBody">
-                            <b><c:out value="${data.mainTask.name}"/></b>
+                            <table>
+                                <tr>
+                                    <td style="width:100%;color:#a94442;" align="center">
+                                        <h3 class="panel-title" align="center"><b><c:out value="${data.mainTask.name}"/></b></h3>
+                                    </td>
+                                    <td style="width:100%;color:#a94442;" align="center">
+                                        <b><c:out value="${data.mainTask.deadlineDate}"/> <c:out value="${data.mainTask.deadlineTime}"/></b>
+                                    </td>
+                                </tr>
+                            </table>
                         </a>
                     </h3>
                 </div>

@@ -1,6 +1,5 @@
 package lv.javaguru.java2.servlet.dto;
 
-import lv.javaguru.java2.domain.Task;
 
 /**
  * Created by vitol on 29/01/2017.
@@ -13,7 +12,7 @@ public class UserDTO {
     private String email;
     private float coins;
     private boolean isVisible;
-    private Task task;
+    private TaskDTO task;
     private int taskCount;
     private int taskSlots;
 
@@ -69,11 +68,11 @@ public class UserDTO {
         isVisible = visible;
     }
 
-    public Task getTask() {
+    public TaskDTO getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(TaskDTO task) {
         this.task = task;
     }
 

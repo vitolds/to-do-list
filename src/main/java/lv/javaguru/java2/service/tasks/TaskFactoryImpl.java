@@ -28,7 +28,7 @@ public class TaskFactoryImpl implements TaskFactory {
     @Autowired
     private UserRepository userRepository;
 
-    static final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
+    static final String DATETIME_STRING_FORMAT = "dd.MM.yyyy HH:mm";
 
     @Override
     public Task create(TaskDTO taskDTO, User user) {

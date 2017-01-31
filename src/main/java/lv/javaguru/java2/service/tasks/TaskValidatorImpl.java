@@ -80,8 +80,11 @@ public class TaskValidatorImpl implements TaskValidator {
 
         Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
         Timestamp timestampDeadline = Utils.convertStringToTimestamp(deadline, TaskFactoryImpl.DATETIME_STRING_FORMAT);
-        if (timestampNow.after(timestampDeadline)) {
-            throw new IllegalArgumentException("Task deadline is not valid");
+        System.out.println(deadline);
+        System.out.println(timestampDeadline);
+        System.out.println(timestampNow);
+        if (timestampDeadline.before(timestampNow)) {
+            throw new IllegalArgumentException("Task deadline is not valid!!!");
         }
 
     }

@@ -26,7 +26,7 @@ public class TaskDTOServiceImpl implements TaskDTOService {
             deadline = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(task.getDeadline());
             deadlineDate = new SimpleDateFormat("dd.MM.yyyy").format(task.getDeadline());
             deadlineTime = new SimpleDateFormat("HH:mm").format(task.getDeadline());
-            if (deadlineTime.equals("00:00")) {
+            if (deadlineTime.equals("23:59")) {
                 deadlineTime = "";
             }
         }

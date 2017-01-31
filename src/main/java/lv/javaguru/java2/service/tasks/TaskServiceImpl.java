@@ -27,8 +27,6 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private CoinService coinService;
 
-    private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
-
     @Override
     public List<Task> getAllTasksByUser(User user) {
 
@@ -49,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
         task.setName(taskDTO.getName());
         task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
-        task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
+        task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), TaskFactoryImpl.DATETIME_STRING_FORMAT));
         task.setUser(user);
         task.setPriority(Integer.parseInt(taskDTO.getPriority()));
 
