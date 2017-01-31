@@ -56,7 +56,7 @@
             </div>
             <div style="float:top; display: block">
                 <h5>Current task slots: <%= user.getTaskSlots()%></h5>
-                <h5>Buy task slots:</h5>
+                <h5>Buy task slots (50 coins per slot):</h5>
                 <form method="post">
                     <div class="input-group" style="max-width: 135px;">
                         <input type="text" class="form-control" placeholder="Task slots" name="slotsToBuy">
