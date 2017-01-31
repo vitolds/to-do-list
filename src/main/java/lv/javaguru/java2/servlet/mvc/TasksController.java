@@ -83,7 +83,13 @@ public class TasksController {
                     taskService.markDone(Integer.parseInt(taskId));
                     break;
                 case "markUndone":
-                    taskService.markUndone(Integer.parseInt(taskId));
+                    try {
+                        taskService.markUndone(Integer.parseInt(taskId));
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        return new ModelAndView("ajaxPage", "data",
+                                "<div class=\"alert alert-danger\" role=\"alert\">" + e.getMessage() + "</div>");
+                    }
                     break;
                 case "markMain":
                     taskService.markMain(Integer.parseInt(taskId));
@@ -92,7 +98,7 @@ public class TasksController {
                     taskService.markNotMain(Integer.parseInt(taskId));
                     break;
             }
-            return new ModelAndView("ajaxPage", "data", "");
+            return new ModelAndView("ajaxPage", "data", 1);
         }
 
         String deadlineDate = req.getParameter("deadlineDate");

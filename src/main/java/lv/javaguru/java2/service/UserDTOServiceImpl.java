@@ -29,6 +29,8 @@ public class UserDTOServiceImpl implements UserDTOService {
         userDTO.setCoins(user.getCoins());
         userDTO.setEmail(user.getEmail());
         userDTO.setVisible(user.isVisible());
+        userDTO.setTaskCount(user.getTaskCount());
+        userDTO.setTaskSlots(user.getTaskSlots());
 
         List<Task> tasks = taskRepository.findByUserIdAndIsMainTaskAndDone(user.getUserId(), true, false);
         Task task = null;

@@ -16,21 +16,9 @@ public class TaskDTOServiceImpl implements TaskDTOService {
         String deadline;
         String deadlineDate;
         String deadlineTime;
-//        try {
-//            deadline = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(task.getDeadline());
-//            deadlineDate = new SimpleDateFormat("dd.MM.yyyy").format(task.getDeadline());
-//            deadlineTime = new SimpleDateFormat("HH:mm").format(task.getDeadline());
-//            if (deadlineTime.equals("00:00")) {
-//                deadlineTime = "";
-//            }
-//        } catch(NullPointerException e) {
-//            deadlineDate = null;
-//            deadlineTime = null;
-//            deadline = null;
-//        }
+
         Timestamp deadlineTimestamp = task.getDeadline();
         if (deadlineTimestamp.equals(Utils.NULL_TIMESTAMP)) {
-            System.out.println("NULL TIMESTAMP");
             deadline = null;
             deadlineDate = null;
             deadlineTime = null;

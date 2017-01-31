@@ -27,6 +27,13 @@ public class User {
 
     @Column(name="Visible")
     private boolean isVisible;
+
+    @Column(name="TaskCount")
+    private int taskCount;
+
+    @Column(name="TaskSlots")
+    private int taskSlots = 3;
+
     public User() {
 
     }
@@ -86,5 +93,21 @@ public class User {
 
     public void setVisible(boolean visible) {
         isVisible = visible;
+    }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
+    }
+
+    public int getTaskSlots() {
+        return taskSlots;
+    }
+
+    public void setTaskSlots(int taskSlots) {
+        this.taskSlots = taskSlots;
     }
 }

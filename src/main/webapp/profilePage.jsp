@@ -55,8 +55,16 @@
                 </div>
             </div>
             <div style="float:top; display: block">
-                <h5>Current task slots: (slots here)</h5>
-                <button class="btn btn-default">Buy task slot (price here)</button>
+                <h5>Current task slots: <%= user.getTaskSlots()%></h5>
+                <h5>Buy task slots:</h5>
+                <form method="post">
+                    <div class="input-group" style="max-width: 135px;">
+                        <input type="text" class="form-control" placeholder="Task slots" name="slotsToBuy">
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Buy</button>
+                    </span>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

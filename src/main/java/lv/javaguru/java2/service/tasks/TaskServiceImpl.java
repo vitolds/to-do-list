@@ -61,13 +61,22 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findOne((long) taskId);
         task.setDone(true);
         coinService.addCoinsToUser(task);
+        User user = task.getUser();
+        user.setTaskCount(user.getTaskCount() - 1);
     }
 
     @Override
     public void markUndone(int taskId) {
         Task task = taskRepository.findOne((long) taskId);
+        User user = task.getUser();
+        try {
+            checkForFreeTaskSlot(user);
+        } catch (IllegalArgumentException e){
+            throw e;
+        }
         task.setDone(false);
         coinService.removeCoinsFromUser(task);
+        user.setTaskCount(user.getTaskCount() + 1);
     }
 
     @Override
@@ -80,5 +89,12 @@ public class TaskServiceImpl implements TaskService {
     public void markNotMain(int taskId) {
         Task task = taskRepository.findOne((long) taskId);
         task.setMainTask(false);
+    }
+
+    @Override
+    public void checkForFreeTaskSlot(User user) {
+        if (user.getTaskCount() >= user.getTaskSlots()) {
+            throw new IllegalArgumentException("No free task slot");
+        }
     }
 }

@@ -9,4 +9,6 @@ public interface CoinService {
 
     void removeCoinsFromUser(Task task);
 
+    void buyTaskSlots(User user, int slots);
+
 }

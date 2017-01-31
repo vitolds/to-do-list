@@ -20,4 +20,6 @@ public interface TaskService {
 
     void markNotMain(int taskId);
 
+    void checkForFreeTaskSlot(User user);
+
 }

@@ -29,7 +29,7 @@
     function editTask(taskId) {
         $.each(jsonObj.doneTasks, function (index, task) {
             if (task.taskId == taskId) {
-                $("#alert").text("");
+                $("#alertModal").text("");
                 $("#taskName").val(task.name);
                 $("#taskText").val(task.text);
                 $("#deadlineDate").val(task.deadlineDate);
@@ -42,7 +42,7 @@
         });
         $.each(jsonObj.undoneTasks, function (index, task) {
                     if (task.taskId == taskId) {
-                        $("#alert").text("");
+                        $("#alertModal").text("");
                         $("#taskName").val(task.name);
                         $("#taskText").val(task.text);
                         $("#deadlineDate").val(task.deadlineDate);
@@ -78,7 +78,11 @@
                 taskId: taskId,
             },
             success: function (data) {
-                location.reload();
+                if (data == 1) {
+                    location.reload();
+                } else {
+                    $("#alert").html(data);
+                }
             }
         });
     }
@@ -129,7 +133,7 @@
                     taskPriority: $('#taskPriority').val(),
                 },
                 success: function (data) {
-                    $("#alert").html(data);
+                    $("#alertModal").html(data);
                 }
             });
         });
@@ -163,6 +167,7 @@
             </ul>
         </div>
     </nav>
+    <div id="alert"></div>
     <c:choose>
         <c:when test="${data.mainTask != null}">
             <div class="panel panel-danger" style="width: 75%; margin:0 auto;">
@@ -281,7 +286,7 @@
                     <form method="post" style="max-width: 530px;padding: 15px;margin: 0 auto;background-color: #fff;
         border-radius: 0.3em;">
                         <h2 align="center"><b>Task creation</b></h2><br>
-                        <div id="alert"><%= request.getAttribute("data")%>
+                        <div id="alertModal">
                         </div>
 
                         <div class="form-group">

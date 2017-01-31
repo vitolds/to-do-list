@@ -1,7 +1,9 @@
 package lv.javaguru.java2.service;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,10 @@ public class CoinServiceImpl implements CoinService{
     private final float SECOND_PRIORITY_COINS = 2;
     private final float THIRD_PRIORITY_COINS = 3;
     private final float MAIN_TASK_COINS = 4;
+    private final int TASK_SLOT_PRICE = 50;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public void addCoinsToUser(Task task) {
@@ -63,5 +69,18 @@ public class CoinServiceImpl implements CoinService{
         }
 
         return 0;
+    }
+
+    @Override
+    public void buyTaskSlots(User user, int slots) {
+        float coins = user.getCoins();
+        float slotSum = TASK_SLOT_PRICE * slots;
+        if (coins >= slotSum) {
+            user.setTaskSlots(user.getTaskSlots() + slots);
+            user.setCoins(coins - slotSum);
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Lack of coins");
+        }
     }
 }

@@ -18,6 +18,8 @@ create table if not exists users (
   Email varchar(255) not null unique,
   Coins float(9, 2) default 0,
   Visible BOOLEAN DEFAULT FALSE,
+  TaskCount int default 0,
+  TaskSlots int default 3,
   primary key (UserId)
 )
 ENGINE = InnoDB

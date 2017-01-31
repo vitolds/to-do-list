@@ -1,6 +1,7 @@
 package lv.javaguru.java2.service.tasks;
 
 import lv.javaguru.java2.database.springJPA.TaskRepository;
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
 import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
@@ -21,10 +22,23 @@ public class TaskFactoryImpl implements TaskFactory {
     @Autowired
     private TaskValidator taskValidator;
 
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     static final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
 
     @Override
     public Task create(TaskDTO taskDTO, User user) {
+
+        try {
+            taskService.checkForFreeTaskSlot(user);
+        }
+        catch (IllegalArgumentException e) {
+            throw e;
+        }
 
         try {
             taskValidator.validateTask(taskDTO);
@@ -48,7 +62,12 @@ public class TaskFactoryImpl implements TaskFactory {
         task.setDone(false);
 
         taskRepository.save(task);
-        
+        int taskCount = user.getTaskCount();
+        taskCount++;
+        user.setTaskCount(taskCount);
+
+        userRepository.save(user);
+
         return task;
     }
 }

@@ -14,6 +14,8 @@ public class UserDTO {
     private float coins;
     private boolean isVisible;
     private Task task;
+    private int taskCount;
+    private int taskSlots;
 
     public UserDTO() {
 
@@ -73,5 +75,21 @@ public class UserDTO {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
+    }
+
+    public int getTaskSlots() {
+        return taskSlots;
+    }
+
+    public void setTaskSlots(int taskSlots) {
+        this.taskSlots = taskSlots;
     }
 }
