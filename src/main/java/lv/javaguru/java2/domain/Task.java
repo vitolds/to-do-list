@@ -3,6 +3,8 @@ package lv.javaguru.java2.domain;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,8 +12,8 @@ import java.sql.Timestamp;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "TaskID", nullable = false)
-    private int taskId;
+    @Column(name = "TaskId", nullable = false)
+    private long id;
 
     @Column(name = "Name", nullable = false)
     private String name;
@@ -25,8 +27,8 @@ public class Task {
     @Column(name = "Deadline")
     private Timestamp deadline;
 
-    @Column(name = "UserID", nullable = false)
-    private int userID;
+//    @Column(name = "UserId", nullable = false)
+//    private long userID;
 
     @Column(name = "MainTask")
     @Type(type = "org.hibernate.type.BooleanType")
@@ -39,12 +41,27 @@ public class Task {
     @Type(type = "org.hibernate.type.BooleanType")
     private boolean done;
 
-    public int getTaskId() {
-        return taskId;
+    @Column(name = "Coins")
+    private float coins;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="UserId", nullable = false)
+    private User user;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public long getTaskId() {
+        return id;
+    }
+
+    public void setTaskId(long taskId) {
+        this.id = taskId;
     }
 
     public String getName() {
@@ -79,13 +96,13 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+//    public long getUserID() {
+//        return userID;
+//    }
+//
+//    public void setUserID(long userID) {
+//        this.userID = userID;
+//    }
 
     public boolean isMainTask() {
         return isMainTask;
@@ -111,4 +128,11 @@ public class Task {
         this.done = done;
     }
 
+    public float getCoins() {
+        return coins;
+    }
+
+    public void setCoins(float coins) {
+        this.coins = coins;
+    }
 }

@@ -10,14 +10,17 @@ use java2;
 drop table if exists users;
 
 create table if not exists users (
-  UserID int not null auto_increment,
+  UserId BIGINT(11) not null auto_increment,
   FirstName varchar(20),
   LastName varchar(20),
   UserName varchar(16) not null unique,
-  PassW varchar(255) not null, -- Password hash + salt ( ~255 )
+  PassW varchar(255) not null,
   Email varchar(255) not null unique,
   Coins float(9, 2) default 0,
-  primary key (UserID)
+  Visible BOOLEAN DEFAULT FALSE,
+  TaskCount int default 0,
+  TaskSlots int default 3,
+  primary key (UserId)
 )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1;
@@ -29,25 +32,40 @@ add index PassWI (PassW);
 
 -- Users table end
 
+-- Users role table start
+
+DROP TABLE IF EXISTS user_roles;
+
+CREATE TABLE if NOT EXISTS user_roles(
+  UserRoleId BIGINT(11) NOT NULL AUTO_INCREMENT,
+  UserId BIGINT(11) NOT NULL,
+  Role VARCHAR(20) NOT NULL,
+  PRIMARY KEY (UserRoleId),
+  UNIQUE KEY UserIdRoleU (Role, UserId),
+  UNIQUE INDEX UserIdI (UserId ASC),
+  CONSTRAINT UserIdFK FOREIGN KEY (UserId) REFERENCES users (UserId)
+)
+ENGINE = InnoDB
+AUTO_INCREMENT = 1;
+-- Users role table end
 
 -- Tasks table start --
 DROP TABLE IF EXISTS tasks ;
 
 CREATE TABLE IF NOT EXISTS tasks (
-  TaskID INT NOT NULL AUTO_INCREMENT,
+  TaskId BIGINT(11) NOT NULL AUTO_INCREMENT,
+  UserId BIGINT(11) NOT NULL,
   Name VARCHAR(60) NOT NULL,
   Text VARCHAR(255) NULL,
   CreationDateTime TIMESTAMP NOT NULL,
   Deadline TIMESTAMP NULL,
-  UserID INT NOT NULL,
   MainTask BOOLEAN DEFAULT FALSE,
   Priority TINYINT DEFAULT 0,
   Done BOOLEAN DEFAULT FALSE,
+  Coins FLOAT(9, 2) DEFAULT 0,
 
-  PRIMARY KEY (TaskID),
-  CONSTRAINT User_FK
-	FOREIGN KEY (UserID)
-    REFERENCES java2.users(UserID)
+  PRIMARY KEY (TaskId),
+  CONSTRAINT User_FK FOREIGN KEY (UserId) REFERENCES users (UserId)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
@@ -58,31 +76,31 @@ AUTO_INCREMENT = 1;
 -- -----------------------------------------------------
 -- Table `parent`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `parent` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(60) NOT NULL,
-  `color` VARCHAR(45) NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB;
+-- CREATE TABLE IF NOT EXISTS `parent` (
+--   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--   `name` VARCHAR(60) NOT NULL,
+--   `color` VARCHAR(45) NULL DEFAULT 0,
+--   PRIMARY KEY (`id`),
+--   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+-- ENGINE = InnoDB;
 -- Parent table end --
 
 -- -----------------------------------------------------
 -- Table `ToDoList_child`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ToDoList_child` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(60) NOT NULL,
-  `Todo id` INT UNSIGNED NOT NULL,
-  `color` VARCHAR(45) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
-  CONSTRAINT `Todo id`
-    FOREIGN KEY (`id`)
-    REFERENCES `parent` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+-- CREATE TABLE IF NOT EXISTS `ToDoList_child` (
+--   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--   `name` VARCHAR(60) NOT NULL,
+--   `Todo id` INT UNSIGNED NOT NULL,
+--   `color` VARCHAR(45) NOT NULL DEFAULT 0,
+--   PRIMARY KEY (`id`),
+--   UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+--   CONSTRAINT `Todo id`
+--     FOREIGN KEY (`id`)
+--     REFERENCES `parent` (`id`)
+--     ON DELETE NO ACTION
+--     ON UPDATE NO ACTION)
+-- ENGINE = InnoDB;
 -- Child table end --
 
 

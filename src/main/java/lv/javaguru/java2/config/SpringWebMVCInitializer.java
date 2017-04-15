@@ -5,10 +5,11 @@ package lv.javaguru.java2.config;
  */
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 
-public class SpringWebMVCInitializer extends AbstractDispatcherServletInitializer {
+public class SpringWebMVCInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
@@ -27,5 +28,15 @@ public class SpringWebMVCInitializer extends AbstractDispatcherServletInitialize
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[] { WebSecurityConfig.class };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[0];
     }
 }

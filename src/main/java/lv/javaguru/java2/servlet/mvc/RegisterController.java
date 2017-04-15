@@ -1,20 +1,15 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.domain.UserBuilder;
-import lv.javaguru.java2.service.RegisterService;
-import lv.javaguru.java2.service.RegisterServiceImpl;
-import lv.javaguru.java2.service.ValidatorMessage;
+import lv.javaguru.java2.service.security.RegisterService;
+import lv.javaguru.java2.service.security.validator.ValidatorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static lv.javaguru.java2.domain.UserBuilder.createUser;
 
 /**
  * Created by Vitolds on 12/17/2016.
@@ -23,29 +18,25 @@ import static lv.javaguru.java2.domain.UserBuilder.createUser;
 public class RegisterController {
 
     @Autowired
-    RegisterService registerService;
+    private RegisterService registerService;
 
     @RequestMapping(value="register", method={RequestMethod.GET})
     public ModelAndView processGet() {
-        return new ModelAndView("redirect", "data", "/");
+        return new ModelAndView("register", "data", null);
     }
 
     @RequestMapping(value="register", method={RequestMethod.POST})
     public ModelAndView processPost(HttpServletRequest req) {
-        User user = createUser()
-                .withUserName(req.getParameter("userName"))
-                .withEmail(req.getParameter("email"))
-                .withFirstName(req.getParameter("firstName"))
-                .withLastName(req.getParameter("lastName"))
-                .build();
+
+        User user = new User();
+        user.setUsername(req.getParameter("username"));
+        user.setEmail(req.getParameter("email"));
+        user.setFirstName(req.getParameter("firstName"));
+        user.setLastName(req.getParameter("lastName"));
         user.setPassword(req.getParameter("password"));
 
         ValidatorMessage validatorMessage = registerService.registerUser(user);
 
-        if (validatorMessage.isSuccess()) return new ModelAndView("homePage", "data",
-                "<span style=\"color: green\">" + validatorMessage.getMessage() + "</span>");
-        else return new ModelAndView("homePage", "data",
-                "<span style=\"color: red\">" + validatorMessage.getMessage() + "</span>");
-
+        return new ModelAndView("redirect", "data", "/java2/register" + validatorMessage.getMessage());
     }
 }

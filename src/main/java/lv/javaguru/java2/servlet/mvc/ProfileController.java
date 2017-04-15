@@ -1,6 +1,12 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.service.CoinService;
+import lv.javaguru.java2.service.UserDTOService;
+import lv.javaguru.java2.service.security.SecurityService;
+import lv.javaguru.java2.servlet.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +22,42 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ProfileController {
 
-    @RequestMapping(value="profile", method={RequestMethod.GET})
-    public ModelAndView processGet(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented
-        User user = (User) session.getAttribute("user");
+    @Autowired
+    private SecurityService securityService;
 
-        return new ModelAndView("profilePage", "data", user);
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserDTOService userDTOService;
+
+    @Autowired
+    private CoinService coinService;
+
+    @RequestMapping(value={"profile", "/"}, method={RequestMethod.GET})
+    public ModelAndView processGet(HttpServletRequest req) {
+
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
+
+        UserDTO userDTO = userDTOService.getUserDTO(user);
+
+        return new ModelAndView("profilePage", "data", userDTO);
+    }
+
+    @RequestMapping(value={"profile", "/"}, method={RequestMethod.POST})
+    public ModelAndView processPost(HttpServletRequest req) {
+        String strSlotCount = req.getParameter("slotsToBuy");
+
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
+
+        int slots;
+        try {
+            slots = Integer.parseInt(strSlotCount);
+            coinService.buyTaskSlots(user, slots);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        UserDTO userDTO = userDTOService.getUserDTO(user);
+        return new ModelAndView("profilePage", "data", userDTO);
     }
 }

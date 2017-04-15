@@ -1,11 +1,12 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.service.security.SecurityService;
 import lv.javaguru.java2.service.tasks.TaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,13 +19,17 @@ import javax.servlet.http.HttpSession;
 public class TaskCreationController{
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    SecurityService securityService;
+
+    @Autowired
     TaskFactory taskFactory;
 
     @RequestMapping(value="create_task", method = {RequestMethod.GET})
     public ModelAndView processGet(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) return new ModelAndView("/", "model", null); //Remove when security implemented
-        else return new ModelAndView("taskCreationPage", "model", null);
+        return new ModelAndView("taskCreationPage", "data", "");
     }
 
     @RequestMapping(value="create_task", method={RequestMethod.POST})
@@ -36,7 +41,7 @@ public class TaskCreationController{
         if (deadlineDate.isEmpty() && deadlineTime.isEmpty()) {
             deadline = "";
         } else if(deadlineTime.isEmpty()) {
-            deadline = deadlineDate + " 00:00";
+            deadline = deadlineDate + " 23:59";
         } else {
             deadline = deadlineDate + " " + deadlineTime;
         }
@@ -53,8 +58,7 @@ public class TaskCreationController{
                 req.getParameter("taskPriority"),
                 "");
 
-        HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
         try {
             Task task = taskFactory.create(taskDTO, user);

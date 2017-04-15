@@ -1,9 +1,11 @@
 package lv.javaguru.java2.service.tasks;
 
 
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.service.Utils;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -76,6 +78,15 @@ public class TaskValidatorImpl implements TaskValidator {
             throw new IllegalArgumentException("Task deadline is not valid");
         }
 
+        Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
+        Timestamp timestampDeadline = Utils.convertStringToTimestamp(deadline, TaskFactoryImpl.DATETIME_STRING_FORMAT);
+        System.out.println(deadline);
+        System.out.println(timestampDeadline);
+        System.out.println(timestampNow);
+        if (timestampDeadline.before(timestampNow)) {
+            throw new IllegalArgumentException("Task deadline is not valid!!!");
+        }
+
     }
 
     @Override
@@ -92,7 +103,7 @@ public class TaskValidatorImpl implements TaskValidator {
 
     @Override
     public void validateIsDone(String isDone) {
-        if (isDone.equals("") || isDone.equals(CHECKBOX_VALUE) ) {
+        if (isDone.equals("") || isDone.equals(CHECKBOX_VALUE)) {
         } else {
             throw new IllegalArgumentException("Task done attribute is not valid");
         }
@@ -101,7 +112,7 @@ public class TaskValidatorImpl implements TaskValidator {
     @Override
     public void validateIsMain(String isMain) {
         if (isMain == null) {
-        } else if (isMain.equals(CHECKBOX_VALUE)) {
+        } else if (isMain.equals(CHECKBOX_VALUE) || isMain.equals("")) {
         } else {
             throw new IllegalArgumentException("Task main attribute is not valid");
         }

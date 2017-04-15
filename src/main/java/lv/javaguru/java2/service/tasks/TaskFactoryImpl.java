@@ -1,8 +1,9 @@
 package lv.javaguru.java2.service.tasks;
 
-import lv.javaguru.java2.database.TaskDAO;
+import lv.javaguru.java2.database.springJPA.TaskRepository;
+import lv.javaguru.java2.database.springJPA.UserRepository;
 import lv.javaguru.java2.domain.Task;
-import lv.javaguru.java2.domain.TaskDTO;
+import lv.javaguru.java2.servlet.dto.TaskDTO;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,28 @@ import java.sql.Timestamp;
 public class TaskFactoryImpl implements TaskFactory {
 
     @Autowired
-    TaskDAO taskDAO;
+    private TaskRepository taskRepository;
 
     @Autowired
-    TaskValidator taskValidator;
+    private TaskValidator taskValidator;
 
-    private final String DATETIME_STRING_FORMAT = "DD.MM.yyyy HH:mm";
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    static final String DATETIME_STRING_FORMAT = "dd.MM.yyyy HH:mm";
 
     @Override
     public Task create(TaskDTO taskDTO, User user) {
+
+        try {
+            taskService.checkForFreeTaskSlot(user);
+        }
+        catch (IllegalArgumentException e) {
+            throw e;
+        }
 
         try {
             taskValidator.validateTask(taskDTO);
@@ -38,7 +52,7 @@ public class TaskFactoryImpl implements TaskFactory {
         task.setText(taskDTO.getText());
         task.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
         task.setDeadline(Utils.convertStringToTimestamp(taskDTO.getDeadline(), DATETIME_STRING_FORMAT));
-        task.setUserID(user.getUserId());
+        task.setUser(user);
         if (taskDTO.getIsMainTask() == null) {
             task.setMainTask(false);
         } else if (taskDTO.getIsMainTask().equals(TaskValidatorImpl.CHECKBOX_VALUE)) {
@@ -47,8 +61,13 @@ public class TaskFactoryImpl implements TaskFactory {
         task.setPriority(Integer.parseInt(taskDTO.getPriority()));
         task.setDone(false);
 
-        taskDAO.create(task);
-        
+        taskRepository.save(task);
+        int taskCount = user.getTaskCount();
+        taskCount++;
+        user.setTaskCount(taskCount);
+
+        userRepository.save(user);
+
         return task;
     }
 }

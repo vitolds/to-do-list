@@ -30,5 +30,11 @@ nav {
 }
 
 .profile-info {
+    float:left;
+}
 
+.main-task {
+    float:right;
+    color: black;
+    margin: 5pt;
 }
